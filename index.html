@@ -578,7 +578,7 @@
   </footer>
 
   <script>
-    // Search functionality
+
     document.addEventListener('DOMContentLoaded', function() {
       const searchInput = document.getElementById('gameSearch');
       const gameCards = document.querySelectorAll('.game-card');
@@ -596,7 +596,6 @@
         });
       });
 
-      // Lazy loading for iframes
       const lazyFrames = document.querySelectorAll('iframe[loading="lazy"]');
       
       const lazyLoad = function(frame) {
@@ -620,7 +619,6 @@
         lazyFrameObserver.observe(frame);
       });
       
-      // Also load frames when hovered (fallback)
       document.querySelectorAll('.game-card').forEach(card => {
         card.addEventListener('mouseenter', function() {
           const frame = this.querySelector('iframe');
@@ -629,16 +627,13 @@
       });
     });
 
-    // Fullscreen functions with loading animation
     function openFullscreen(src) {
       const overlay = document.getElementById('fullscreenOverlay');
       const loader = document.getElementById('loaderOverlay');
       const frame = document.getElementById('fullscreenFrame');
-      
-      // Show loader
+    
       loader.style.display = 'flex';
       
-      // Show overlay but keep it transparent until loaded
       overlay.style.display = 'flex';
       overlay.style.opacity = '0';
       
