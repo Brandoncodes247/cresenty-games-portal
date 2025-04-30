@@ -51,12 +51,64 @@
       color: #ff6f61;
       text-shadow: 0 0 10px rgba(255, 111, 97, 0.7);
       letter-spacing: 2px;
+      position: relative;
+      animation: glitch 2s linear infinite;
+    }
+
+    @keyframes glitch {
+      0% { transform: translate(0); }
+      20% { transform: translate(-3px, 3px); }
+      40% { transform: translate(-3px, -3px); }
+      60% { transform: translate(3px, 3px); }
+      80% { transform: translate(3px, -3px); }
+      100% { transform: translate(0); }
     }
 
     .tagline {
       font-size: 1.2rem;
       color: #bbb;
       margin-top: 10px;
+    }
+
+    .search-container {
+      margin: 20px auto;
+      max-width: 500px;
+      position: relative;
+      display: flex;
+    }
+
+    #gameSearch {
+      width: 100%;
+      padding: 12px 20px;
+      border: 2px solid #4cc9f0;
+      border-radius: 30px;
+      background: rgba(30, 30, 30, 0.8);
+      color: white;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1rem;
+      outline: none;
+      transition: all 0.3s;
+    }
+
+    #gameSearch:focus {
+      border-color: #ff6f61;
+      box-shadow: 0 0 15px rgba(255, 111, 97, 0.6);
+    }
+
+    #searchButton {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: transparent;
+      border: none;
+      color: #4cc9f0;
+      cursor: pointer;
+      font-size: 1.2rem;
+    }
+
+    #searchButton:hover {
+      color: #ff6f61;
     }
 
     .pixel-animation {
@@ -99,6 +151,41 @@
       overflow: hidden;
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
       cursor: pointer;
+      z-index: 1;
+    }
+
+    .game-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(255,111,97,0.1) 0%, rgba(76,201,240,0.1) 100%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: -1;
+    }
+
+    .game-card:hover::before {
+      opacity: 1;
+    }
+
+    .game-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, #ff6f61, #4cc9f0);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+    }
+
+    .game-card:hover::after {
+      transform: scaleX(1);
     }
 
     .game-card:hover {
@@ -112,6 +199,12 @@
       margin-bottom: 20px;
       font-family: 'Press Start 2P', cursive;
       text-shadow: 0 0 10px rgba(76, 201, 240, 0.5);
+      transition: all 0.3s ease;
+    }
+
+    .game-card:hover h2 {
+      color: #ff6f61;
+      text-shadow: 0 0 15px rgba(255, 111, 97, 0.9);
     }
 
     .game-card iframe {
@@ -123,13 +216,25 @@
       box-shadow: 0 0 25px rgba(76, 201, 240, 0.4);
       transition: all 0.3s ease;
       pointer-events: none;
+      filter: grayscale(20%);
     }
 
     .game-card:hover iframe {
       border-color: #ff6f61;
       box-shadow: 0 0 35px rgba(255, 111, 97, 0.6);
+      filter: grayscale(0%);
     }
 
+    iframe[loading="lazy"][src="about:blank"] {
+      background: linear-gradient(45deg, #1e1e1e 25%, #2a2a2a 50%, #1e1e1e 75%);
+      background-size: 200% 200%;
+      animation: placeholderShine 2s infinite linear;
+    }
+
+    @keyframes placeholderShine {
+      0% { background-position: 100% 100%; }
+      100% { background-position: 0% 0%; }
+    }
     
     .fullscreen-overlay {
       position: fixed;
@@ -142,6 +247,8 @@
       align-items: center;
       justify-content: center;
       z-index: 9999;
+      opacity: 0;
+      transition: opacity 0.3s;
     }
 
     .fullscreen-overlay iframe {
@@ -164,6 +271,44 @@
       z-index: 10000;
     }
 
+    .loader-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 99999;
+      display: none;
+    }
+
+    .loader-content {
+      text-align: center;
+    }
+
+    .pixel-loader {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 20px;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%23ff6f61" x="20" y="20" width="20" height="20"/><rect fill="%234cc9f0" x="50" y="20" width="20" height="20"/><rect fill="%23ff6f61" x="80" y="20" width="20" height="20"/><rect fill="%234cc9f0" x="20" y="50" width="20" height="20"/><rect fill="%23ff6f61" x="50" y="50" width="20" height="20"/><rect fill="%234cc9f0" x="80" y="50" width="20" height="20"/><rect fill="%23ff6f61" x="20" y="80" width="20" height="20"/><rect fill="%234cc9f0" x="50" y="80" width="20" height="20"/><rect fill="%23ff6f61" x="80" y="80" width="20" height="20"/></svg>');
+      image-rendering: pixelated;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.2); opacity: 0.7; }
+    }
+
+    .loader-content p {
+      color: #4cc9f0;
+      font-size: 1.2rem;
+      margin-top: 15px;
+      text-shadow: 0 0 10px rgba(76, 201, 240, 0.7);
+    }
   
     footer {
       background-color: rgba(10, 10, 10, 0.9);
@@ -237,22 +382,6 @@
       }
     }
   </style>
-
-  <script>
-    function openFullscreen(src) {
-      const overlay = document.getElementById('fullscreenOverlay');
-      const frame = document.getElementById('fullscreenFrame');
-      frame.src = src;
-      overlay.style.display = 'flex';
-    }
-
-    function closeFullscreen() {
-      const overlay = document.getElementById('fullscreenOverlay');
-      const frame = document.getElementById('fullscreenFrame');
-      frame.src = '';
-      overlay.style.display = 'none';
-    }
-  </script>
 </head>
 <body>
 
@@ -261,6 +390,10 @@
     <div>
       <h1 class="glitch-effect">CRESENTY GAMES</h1>
       <p class="tagline">Play our selection of free online games</p>
+      <div class="search-container">
+        <input type="text" id="gameSearch" placeholder="Search games..." aria-label="Search games">
+        <button id="searchButton"><i class="fas fa-search"></i></button>
+      </div>
     </div>
     <div class="pixel-animation">
       <div class="pixel-character"></div>
@@ -271,170 +404,154 @@
 
     <div class="game-card" onclick="openFullscreen('./games/scout X/index.html')">
       <h2>Scout X</h2>
-      <iframe src="./games/scout X/index.html" allowfullscreen></iframe>
+      <iframe loading="lazy" data-src="./games/scout X/index.html" src="about:blank" allowfullscreen></iframe>
     </div>
 
     <div class="game-card" onclick="openFullscreen('./games/floppybird-gh-pages/index.html')">
       <h2>Flappy Bird</h2>
-      <iframe src="./games/floppybird-gh-pages/index.html" allowfullscreen></iframe>
+      <iframe loading="lazy" data-src="./games/floppybird-gh-pages/index.html" src="about:blank" allowfullscreen></iframe>
     </div>
 
     <div class="game-card" onclick="openFullscreen('./games/2048-master/index.html')">
       <h2>2048</h2>
-      <iframe src="./games/2048-master/index.html" allowfullscreen></iframe>
+      <iframe loading="lazy" data-src="./games/2048-master/index.html" src="about:blank" allowfullscreen></iframe>
     </div>
 
     <div class="game-card" onclick="openFullscreen('./games/HexGL-master/index.html')">
       <h2>Hex-GL</h2>
-      <iframe src="./games/HexGL-master/index.html" allowfullscreen></iframe>
+      <iframe loading="lazy" data-src="./games/HexGL-master/index.html" src="about:blank" allowfullscreen></iframe>
     </div>
     <div class="game-card" onclick="openFullscreen('./games/pacman-master/index.html')">
       <h2>Pacman</h2>
-      <iframe src="./games/pacman-master/index.html" allowfullscreen></iframe>
+      <iframe loading="lazy" data-src="./games/pacman-master/index.html" src="about:blank" allowfullscreen></iframe>
     </div>
     <div class="game-card" onclick="openFullscreen('./games/SpaceInvaders-master/index.html')">
       <h2>Space Invaders</h2>
-      <iframe src="./games/SpaceInvaders-master/index.html" allowfullscreen></iframe>
+      <iframe loading="lazy" data-src="./games/SpaceInvaders-master/index.html" src="about:blank" allowfullscreen></iframe>
     </div>
     <div class="game-card" onclick="openFullscreen('./games/hextris-gh-pages/index.html')">
       <h2>Hextris</h2>
-      <iframe src="./games/hextris-gh-pages/index.html" allowfullscreen></iframe>
+      <iframe loading="lazy" data-src="./games/hextris-gh-pages/index.html" src="about:blank" allowfullscreen></iframe>
     </div>
   
     <div class="game-card" onclick="openFullscreen('./games/amongus/index.html')">
       <h2>Among Us</h2>
-      <iframe src="./games/amongus/index.html" allowfullscreen></iframe>
+      <iframe loading="lazy" data-src="./games/amongus/index.html" src="about:blank" allowfullscreen></iframe>
     </div>
     
     <div class="game-card" onclick="openFullscreen('./games/asciispace/index.html')">
       <h2>Asciispace</h2>
-      <iframe src="./games/asciispace/index.html" allowfullscreen></iframe>
+      <iframe loading="lazy" data-src="./games/asciispace/index.html" src="about:blank" allowfullscreen></iframe>
     </div>
     
     <div class="game-card" onclick="openFullscreen('./games/asteroids/index.html')">
       <h2>Asteroids</h2>
-      <iframe src="./games/asteroids/index.html" allowfullscreen></iframe>
+      <iframe loading="lazy" data-src="./games/asteroids/index.html" src="about:blank" allowfullscreen></iframe>
     </div>
     
     <div class="game-card" onclick="openFullscreen('./games/astray/index.html')">
       <h2>Astray</h2>
-      <iframe src="./games/astray/index.html" allowfullscreen></iframe>
+      <iframe loading="lazy" data-src="./games/astray/index.html" src="about:blank" allowfullscreen></iframe>
     </div>
     
     <div class="game-card" onclick="openFullscreen('./games/backcountry/index.html')">
       <h2>Backcountry</h2>
-      <iframe src="./games/backcountry/index.html" allowfullscreen></iframe>
+      <iframe loading="lazy" data-src="./games/backcountry/index.html" src="about:blank" allowfullscreen></iframe>
     </div>
     
     <div class="game-card" onclick="openFullscreen('./games/basketballstars/index.html')">
       <h2>Basketball Stars</h2>
-      <iframe src="./games/basketballstars/index.html" allowfullscreen></iframe>
+      <iframe loading="lazy" data-src="./games/basketballstars/index.html" src="about:blank" allowfullscreen></iframe>
     </div>
     
     <div class="game-card" onclick="openFullscreen('./games/blackholesquare/index.html')">
       <h2>Blackhole Square</h2>
-      <iframe src="./games/blackholesquare/index.html" allowfullscreen></iframe>
+      <iframe loading="lazy" data-src="./games/blackholesquare/index.html" src="about:blank" allowfullscreen></iframe>
     </div>
     
-   
     <div class="game-card" onclick="openFullscreen('./games/bounceback/index.html')">
       <h2>Bounceback</h2>
-      <iframe src="./games/bounceback/index.html" allowfullscreen></iframe>
+      <iframe loading="lazy" data-src="./games/bounceback/index.html" src="about:blank" allowfullscreen></iframe>
     </div>
     
     <div class="game-card" onclick="openFullscreen('./games/breaklock/index.html')">
       <h2>Breaklock</h2>
-      <iframe src="./games/breaklock/index.html" allowfullscreen></iframe>
+      <iframe loading="lazy" data-src="./games/breaklock/index.html" src="about:blank" allowfullscreen></iframe>
     </div>
     
     <div class="game-card" onclick="openFullscreen('./games/breakout/index.html')">
       <h2>Breakout</h2>
-      <iframe src="./games/breakout/index.html" allowfullscreen></iframe>
+      <iframe loading="lazy" data-src="./games/breakout/index.html" src="about:blank" allowfullscreen></iframe>
     </div>
     
     <div class="game-card" onclick="openFullscreen('./games/captaincallisto/index.html')">
       <h2>Captain Callisto</h2>
-      <iframe src="./games/captaincallisto/index.html" allowfullscreen></iframe>
+      <iframe loading="lazy" data-src="./games/captaincallisto/index.html" src="about:blank" allowfullscreen></iframe>
     </div>
     
     <div class="game-card" onclick="openFullscreen('./games/chess/index.html')">
       <h2>Chess</h2>
-      <iframe src="./games/chess/index.html" allowfullscreen></iframe>
+      <iframe loading="lazy" data-src="./games/chess/index.html" src="about:blank" allowfullscreen></iframe>
     </div>
     
     <div class="game-card" onclick="openFullscreen('./games/chromaincident/index.html')">
       <h2>Chroma Incident</h2>
-      <iframe src="./games/chromaincident/index.html" allowfullscreen></iframe>
+      <iframe loading="lazy" data-src="./games/chromaincident/index.html" src="about:blank" allowfullscreen></iframe>
     </div>
     
     <div class="game-card" onclick="openFullscreen('./games/chrome-dino/index.html')">
       <h2>Chrome Dino</h2>
-      <iframe src="./games/chrome-dino/index.html" allowfullscreen></iframe>
+      <iframe loading="lazy" data-src="./games/chrome-dino/index.html" src="about:blank" allowfullscreen></iframe>
     </div>
-    
-  
     
     <div class="game-card" onclick="openFullscreen('./games/connect3/index.html')">
       <h2>Connect 3</h2>
-      <iframe src="./games/connect3/index.html" allowfullscreen></iframe>
+      <iframe loading="lazy" data-src="./games/connect3/index.html" src="about:blank" allowfullscreen></iframe>
     </div>
     
     <div class="game-card" onclick="openFullscreen('./games/cookieclicker/index.html')">
       <h2>Cookie Clicker</h2>
-      <iframe src="./games/cookieclicker/index.html" allowfullscreen></iframe>
+      <iframe loading="lazy" data-src="./games/cookieclicker/index.html" src="about:blank" allowfullscreen></iframe>
     </div>
     
     <div class="game-card" onclick="openFullscreen('./games/crossyroad/index.html')">
       <h2>Crossy Road</h2>
-      <iframe src="./games/crossyroad/index.html" allowfullscreen></iframe>
+      <iframe loading="lazy" data-src="./games/crossyroad/index.html" src="about:blank" allowfullscreen></iframe>
     </div>
     
-   
-  
     <div class="game-card" onclick="openFullscreen('./games/geometrydash/index.html')">
       <h2>Geometry Dash</h2>
-      <iframe src="./games/geometrydash/index.html" allowfullscreen></iframe>
+      <iframe loading="lazy" data-src="./games/geometrydash/index.html" src="about:blank" allowfullscreen></iframe>
     </div>
     
-   
-  
-    
-   
     <div class="game-card" onclick="openFullscreen('./games/tetris/index.html')">
       <h2>Tetris</h2>
-      <iframe src="./games/tetris/index.html" allowfullscreen></iframe>
+      <iframe loading="lazy" data-src="./games/tetris/index.html" src="about:blank" allowfullscreen></iframe>
     </div>
     
-    
- 
     <div class="game-card" onclick="openFullscreen('./games/chess/index.html')">
       <h2>Chess</h2>
-      <iframe src="./games/chess/index.html" allowfullscreen></iframe>
+      <iframe loading="lazy" data-src="./games/chess/index.html" src="about:blank" allowfullscreen></iframe>
     </div>
     
     <div class="game-card" onclick="openFullscreen('./games/racer/index.html')">
       <h2>Racer</h2>
-      <iframe src="./games/racer/index.html" allowfullscreen></iframe>
+      <iframe loading="lazy" data-src="./games/racer/index.html" src="about:blank" allowfullscreen></iframe>
     </div>
     
-   
     <div class="game-card" onclick="openFullscreen('./games/snake/index.html')">
       <h2>Snake</h2>
-      <iframe src="./games/snake/index.html" allowfullscreen></iframe>
+      <iframe loading="lazy" data-src="./games/snake/index.html" src="about:blank" allowfullscreen></iframe>
     </div>
-    
-   
     
     <div class="game-card" onclick="openFullscreen('./games/doodle-jump/index.html')">
       <h2>Doodle Jump</h2>
-      <iframe src="./games/doodle-jump/index.html" allowfullscreen></iframe>
+      <iframe loading="lazy" data-src="./games/doodle-jump/index.html" src="about:blank" allowfullscreen></iframe>
     </div>
-    
-    
     
     <div class="game-card" onclick="openFullscreen('./games/breakout/index.html')">
       <h2>Breakout</h2>
-      <iframe src="./games/breakout/index.html" allowfullscreen></iframe>
+      <iframe loading="lazy" data-src="./games/breakout/index.html" src="about:blank" allowfullscreen></iframe>
     </div>
     
   </div>
@@ -442,6 +559,13 @@
   <div class="fullscreen-overlay" id="fullscreenOverlay">
     <button class="close-btn" onclick="closeFullscreen()">&times;</button>
     <iframe id="fullscreenFrame" allowfullscreen></iframe>
+  </div>
+
+  <div class="loader-overlay" id="loaderOverlay">
+    <div class="loader-content">
+      <div class="pixel-loader"></div>
+      <p>Loading Game...</p>
+    </div>
   </div>
 
   <footer>
@@ -453,5 +577,87 @@
     <p class="copyright">&copy; 2025 Cresenty Studio. All rights reserved.</p>
   </footer>
 
+  <script>
+    // Search functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const searchInput = document.getElementById('gameSearch');
+      const gameCards = document.querySelectorAll('.game-card');
+      
+      searchInput.addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase();
+        
+        gameCards.forEach(card => {
+          const gameTitle = card.querySelector('h2').textContent.toLowerCase();
+          if (gameTitle.includes(searchTerm)) {
+            card.style.display = 'block';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+
+      // Lazy loading for iframes
+      const lazyFrames = document.querySelectorAll('iframe[loading="lazy"]');
+      
+      const lazyLoad = function(frame) {
+        if (frame.getAttribute('data-src') && frame.src === 'about:blank') {
+          frame.src = frame.getAttribute('data-src');
+        }
+      };
+      
+      const lazyFrameObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            lazyLoad(entry.target);
+            observer.unobserve(entry.target);
+          }
+        });
+      }, {
+        rootMargin: '200px 0px'
+      });
+      
+      lazyFrames.forEach(frame => {
+        lazyFrameObserver.observe(frame);
+      });
+      
+      // Also load frames when hovered (fallback)
+      document.querySelectorAll('.game-card').forEach(card => {
+        card.addEventListener('mouseenter', function() {
+          const frame = this.querySelector('iframe');
+          lazyLoad(frame);
+        }, { once: true });
+      });
+    });
+
+    // Fullscreen functions with loading animation
+    function openFullscreen(src) {
+      const overlay = document.getElementById('fullscreenOverlay');
+      const loader = document.getElementById('loaderOverlay');
+      const frame = document.getElementById('fullscreenFrame');
+      
+      // Show loader
+      loader.style.display = 'flex';
+      
+      // Show overlay but keep it transparent until loaded
+      overlay.style.display = 'flex';
+      overlay.style.opacity = '0';
+      
+      frame.onload = function() {
+        loader.style.display = 'none';
+        overlay.style.opacity = '1';
+      };
+      frame.src = src;
+    }
+
+    function closeFullscreen() {
+      const overlay = document.getElementById('fullscreenOverlay');
+      const frame = document.getElementById('fullscreenFrame');
+      const loader = document.getElementById('loaderOverlay');
+      
+      frame.src = '';
+      overlay.style.display = 'none';
+      loader.style.display = 'none';
+    }
+  </script>
 </body>
 </html>
