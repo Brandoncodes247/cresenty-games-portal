@@ -8,6 +8,10 @@
   <link rel="icon" type="image/png" href="favicon.png">
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Orbitron:wght@400;700" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+
+
 
   <style>
     body {
@@ -529,10 +533,7 @@
       <iframe loading="lazy" data-src="./games/tetris/index.html" src="about:blank" allowfullscreen></iframe>
     </div>
     
-    <div class="game-card" onclick="openFullscreen('./games/chess/index.html')">
-      <h2>Chess</h2>
-      <iframe loading="lazy" data-src="./games/chess/index.html" src="about:blank" allowfullscreen></iframe>
-    </div>
+ 
     
     <div class="game-card" onclick="openFullscreen('./games/racer/index.html')">
       <h2>Racer</h2>
@@ -549,18 +550,15 @@
       <iframe loading="lazy" data-src="./games/doodle-jump/index.html" src="about:blank" allowfullscreen></iframe>
     </div>
     
-    <div class="game-card" onclick="openFullscreen('./games/breakout/index.html')">
-      <h2>Breakout</h2>
-      <iframe loading="lazy" data-src="./games/breakout/index.html" src="about:blank" allowfullscreen></iframe>
-    </div>
+  
     
   </div>
-
   <div class="fullscreen-overlay" id="fullscreenOverlay">
     <button class="close-btn" onclick="closeFullscreen()">&times;</button>
-    <iframe id="fullscreenFrame" allowfullscreen></iframe>
+    <iframe id="fullscreenIframe" allowfullscreen></iframe>
   </div>
 
+  
   <div class="loader-overlay" id="loaderOverlay">
     <div class="loader-content">
       <div class="pixel-loader"></div>
@@ -576,83 +574,83 @@
     </div>
     <p class="copyright">&copy; 2025 Cresenty Studio. All rights reserved.</p>
   </footer>
-
   <script>
-
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
       const searchInput = document.getElementById('gameSearch');
       const gameCards = document.querySelectorAll('.game-card');
-      
-      searchInput.addEventListener('input', function() {
+      const overlay = document.getElementById("fullscreenOverlay");
+      const fullscreenIframe = document.getElementById("fullscreenIframe");
+      const loader = document.getElementById("loaderOverlay");
+  
+    
+      searchInput.addEventListener('input', function () {
         const searchTerm = this.value.toLowerCase();
-        
         gameCards.forEach(card => {
-          const gameTitle = card.querySelector('h2').textContent.toLowerCase();
-          if (gameTitle.includes(searchTerm)) {
-            card.style.display = 'block';
-          } else {
-            card.style.display = 'none';
-          }
+          const title = card.querySelector('h2').textContent.toLowerCase();
+          card.style.display = title.includes(searchTerm) ? 'block' : 'none';
         });
       });
-
-      const lazyFrames = document.querySelectorAll('iframe[loading="lazy"]');
+  
       
-      const lazyLoad = function(frame) {
-        if (frame.getAttribute('data-src') && frame.src === 'about:blank') {
-          frame.src = frame.getAttribute('data-src');
+      const lazyLoad = (iframe) => {
+        if (iframe.getAttribute('data-src') && iframe.src === 'about:blank') {
+          iframe.src = iframe.getAttribute('data-src');
         }
       };
-      
-      const lazyFrameObserver = new IntersectionObserver((entries, observer) => {
+  
+      const lazyFrames = document.querySelectorAll('iframe[loading="lazy"]');
+  
+      const observer = new IntersectionObserver(entries => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             lazyLoad(entry.target);
             observer.unobserve(entry.target);
           }
         });
-      }, {
-        rootMargin: '200px 0px'
-      });
-      
-      lazyFrames.forEach(frame => {
-        lazyFrameObserver.observe(frame);
-      });
-      
-      document.querySelectorAll('.game-card').forEach(card => {
-        card.addEventListener('mouseenter', function() {
-          const frame = this.querySelector('iframe');
-          lazyLoad(frame);
+      }, { rootMargin: '200px 0px' });
+  
+      lazyFrames.forEach(frame => observer.observe(frame));
+  
+    
+      gameCards.forEach(card => {
+        card.addEventListener('mouseenter', () => {
+          const iframe = card.querySelector('iframe');
+          if (iframe) lazyLoad(iframe);
         }, { once: true });
       });
-    });
-
-    function openFullscreen(src) {
-      const overlay = document.getElementById('fullscreenOverlay');
-      const loader = document.getElementById('loaderOverlay');
-      const frame = document.getElementById('fullscreenFrame');
-    
-      loader.style.display = 'flex';
+  
       
-      overlay.style.display = 'flex';
-      overlay.style.opacity = '0';
-      
-      frame.onload = function() {
-        loader.style.display = 'none';
-        overlay.style.opacity = '1';
+      window.openFullscreen = function (url) {
+        
+        document.querySelectorAll('.game-card iframe').forEach(iframe => {
+          iframe.src = 'about:blank';
+        });
+  
+        
+        fullscreenIframe.src = '';
+        loader.style.display = 'flex';
+        overlay.style.display = 'flex';
+        overlay.style.opacity = '0';
+  
+        
+        fullscreenIframe.onload = () => {
+          loader.style.display = 'none';
+          overlay.style.opacity = '1';
+        };
+        fullscreenIframe.src = url;
       };
-      frame.src = src;
-    }
-
-    function closeFullscreen() {
-      const overlay = document.getElementById('fullscreenOverlay');
-      const frame = document.getElementById('fullscreenFrame');
-      const loader = document.getElementById('loaderOverlay');
-      
-      frame.src = '';
-      overlay.style.display = 'none';
-      loader.style.display = 'none';
-    }
+  
+    
+      window.closeFullscreen = function () {
+        fullscreenIframe.src = '';
+        overlay.style.opacity = '0';
+        loader.style.display = 'none';
+        setTimeout(() => {
+          overlay.style.display = 'none';
+        }, 300);
+      };
+    });
   </script>
+  
 </body>
 </html>
