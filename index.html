@@ -287,7 +287,7 @@
       font-size: 16px;
     }
 
-    /* Responsive adjustments */
+    /* Remove device-specific media queries */
     @media (max-width: 768px) {
       header {
         flex-direction: column;
@@ -478,6 +478,19 @@
       outline: 3px solid var(--secondary-color);
       box-shadow: 0 0 0 4px rgba(76,201,240,0.3);
     }
+
+    /* Add responsive fallbacks for device compatibility */
+    @media (max-width: 768px) {
+      .desktop-game {
+        display: none !important;
+      }
+    }
+
+    @media (min-width: 769px) {
+      .mobile-game {
+        display: none !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -527,7 +540,7 @@
         <h2>2048</h2>
       </div>
 
-      <div class="game-card" data-categories="racing" onclick="openFullscreen('./games/HexGL-master/index.html')" tabindex="0" role="button" aria-label="Play Hex-GL">
+      <div class="game-card desktop-game" data-categories="racing" onclick="openFullscreen('./games/HexGL-master/index.html')" tabindex="0" role="button" aria-label="Play Hex-GL">
         <div class="game-icon">
           <img src="Hex-Gl.png" alt="Hex-GL">
         </div>
@@ -541,7 +554,7 @@
         <h2>Pacman</h2>
       </div>
 
-      <div class="game-card" data-categories="action arcade" onclick="openFullscreen('./games/SpaceInvaders-master/index.html')" tabindex="0" role="button" aria-label="Play Space Invaders">
+      <div class="game-card desktop-game" data-categories="action arcade" onclick="openFullscreen('./games/SpaceInvaders-master/index.html')" tabindex="0" role="button" aria-label="Play Space Invaders">
         <div class="game-icon">
           <img src="SpaceInvaders.png" alt="Space Invaders">
         </div>
@@ -562,14 +575,14 @@
         <h2>Among Us</h2>
       </div>
 
-      <div class="game-card" data-categories="action" onclick="openFullscreen('./games/asciispace/index.html')" tabindex="0" role="button" aria-label="Play Asciispace">
+      <div class="game-card desktop-game" data-categories="action" onclick="openFullscreen('./games/asciispace/index.html')" tabindex="0" role="button" aria-label="Play Asciispace">
         <div class="game-icon">
           <img src="Asciispace.png" alt="Asciispace">
         </div>
         <h2>Asciispace</h2>
       </div>
 
-      <div class="game-card" data-categories="action arcade" onclick="openFullscreen('./games/asteroids/index.html')" tabindex="0" role="button" aria-label="Play Asteroids">
+      <div class="game-card desktop-game" data-categories="action arcade" onclick="openFullscreen('./games/asteroids/index.html')" tabindex="0" role="button" aria-label="Play Asteroids">
         <div class="game-icon">
           <img src="Asteroids.png" alt="Asteroids">
         </div>
@@ -639,7 +652,7 @@
         <h2>Chess</h2>
       </div>
 
-      <div class="game-card" data-categories="action" onclick="openFullscreen('./games/chromaincident/index.html')" tabindex="0" role="button" aria-label="Play Chroma Incident">
+      <div class="game-card desktop-game" data-categories="action" onclick="openFullscreen('./games/chromaincident/index.html')" tabindex="0" role="button" aria-label="Play Chroma Incident">
         <div class="game-icon">
           <img src="chromaincident.png" alt="Chroma Incident">
         </div>
@@ -688,7 +701,7 @@
         <h2>Tetris</h2>
       </div>
 
-      <div class="game-card" data-categories="racing" onclick="openFullscreen('./games/racer/index.html')" tabindex="0" role="button" aria-label="Play Racer">
+      <div class="game-card desktop-game" data-categories="racing" onclick="openFullscreen('./games/racer/index.html')" tabindex="0" role="button" aria-label="Play Racer">
         <div class="game-icon">
           <img src="Racer.png" alt="Racer">
         </div>
