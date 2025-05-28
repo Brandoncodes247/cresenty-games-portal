@@ -106,12 +106,16 @@
       transform: scale(1.05);
     }
 
-    h1 {
+    h1.cresenty-pixel {
+      font-family: 'Press Start 2P', cursive;
+      color: #ff6b6b;
+      font-size: 4rem;
+      letter-spacing: 0.08em;
+      text-shadow: none;
       margin: 0;
-      font-size: 3rem;
-      font-family: var(--font-secondary);
-      color: var(--text-color);
-      text-shadow: var(--neon-glow);
+      padding: 0;
+      background: none;
+      animation: none;
     }
 
     .tagline {
@@ -296,7 +300,7 @@
         margin: 0 0 20px 0;
       }
 
-      h1 {
+      h1.cresenty-pixel {
         font-size: 2rem;
       }
 
@@ -307,6 +311,12 @@
 
       .game-card iframe {
         height: 300px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      h1.cresenty-pixel {
+        font-size: 2rem;
       }
     }
 
@@ -407,6 +417,67 @@
         height: 150px;
       }
     }
+
+    /* Add these new styles for the share button */
+    .share-section {
+      text-align: center;
+      margin: 50px 0;
+    }
+
+    #nativeShareBtn {
+      font-size: 1.4rem;
+      padding: 18px 35px;
+      border-radius: 15px;
+      background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      margin-bottom: 25px;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+      position: relative;
+      overflow: hidden;
+      font-family: var(--font-primary);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: bold;
+    }
+
+    #nativeShareBtn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, var(--secondary-color), var(--primary-color));
+      transition: all 0.4s ease;
+      z-index: 1;
+    }
+
+    #nativeShareBtn:hover::before {
+      left: 0;
+    }
+
+    #nativeShareBtn span {
+      position: relative;
+      z-index: 2;
+    }
+
+    #nativeShareBtn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+    }
+
+    #nativeShareBtn:active {
+      transform: translateY(1px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+
+    .game-card:focus {
+      outline: 3px solid var(--secondary-color);
+      box-shadow: 0 0 0 4px rgba(76,201,240,0.3);
+    }
   </style>
 </head>
 <body>
@@ -414,11 +485,10 @@
     <header>
       <img src="Cresenty Logo.jpg" alt="Cresenty Studio Logo" class="logo" loading="eager">
       <div>
-        <h1 class="glitch-effect">CRESENTY GAMES</h1>
+        <h1 class="cresenty-pixel">Cresenty Games</h1>
         <p class="tagline">Play our selection of free online games</p>
         <div class="search-container">
           <input type="text" id="gameSearch" placeholder="Search games..." aria-label="Search games">
-          <button id="searchButton" aria-label="Search"><i class="fas fa-search"></i></button>
         </div>
       </div>
     </header>
@@ -436,205 +506,205 @@
     </section>
 
     <section class="game-container">
-      <div class="game-card" data-categories="action adventure" onclick="openFullscreen('./games/scout X/index.html')">
+      <div class="game-card" data-categories="action adventure" onclick="openFullscreen('./games/scout X/index.html')" tabindex="0" role="button" aria-label="Play Scout X">
         <div class="game-icon">
-          <img src="game-icons/scout-x-icon.png" alt="Scout X">
+          <img src="ScoutX.jpg" alt="Scout X">
         </div>
         <h2>Scout X</h2>
       </div>
 
-      <div class="game-card" data-categories="arcade" onclick="openFullscreen('./games/floppybird-gh-pages/index.html')">
+      <div class="game-card" data-categories="arcade" onclick="openFullscreen('./games/floppybird-gh-pages/index.html')" tabindex="0" role="button" aria-label="Play Flappy Bird">
         <div class="game-icon">
-          <img src="game-icons/flappy-bird-icon.png" alt="Flappy Bird">
+          <img src="Flappybird.png" alt="Flappy Bird">
         </div>
         <h2>Flappy Bird</h2>
       </div>
 
-      <div class="game-card" data-categories="puzzle" onclick="openFullscreen('./games/2048-master/index.html')">
+      <div class="game-card" data-categories="puzzle" onclick="openFullscreen('./games/2048-master/index.html')" tabindex="0" role="button" aria-label="Play 2048">
         <div class="game-icon">
-          <img src="game-icons/2048-icon.png" alt="2048">
+          <img src="2048.png" alt="2048">
         </div>
         <h2>2048</h2>
       </div>
 
-      <div class="game-card" data-categories="racing" onclick="openFullscreen('./games/HexGL-master/index.html')">
+      <div class="game-card" data-categories="racing" onclick="openFullscreen('./games/HexGL-master/index.html')" tabindex="0" role="button" aria-label="Play Hex-GL">
         <div class="game-icon">
-          <img src="game-icons/hexgl-icon.png" alt="Hex-GL">
+          <img src="Hex-Gl.png" alt="Hex-GL">
         </div>
         <h2>Hex-GL</h2>
       </div>
 
-      <div class="game-card" data-categories="arcade" onclick="openFullscreen('./games/pacman-master/index.html')">
+      <div class="game-card" data-categories="arcade" onclick="openFullscreen('./games/pacman-master/index.html')" tabindex="0" role="button" aria-label="Play Pacman">
         <div class="game-icon">
-          <img src="game-icons/pacman-icon.png" alt="Pacman">
+          <img src="Pacman.png" alt="Pacman">
         </div>
         <h2>Pacman</h2>
       </div>
 
-      <div class="game-card" data-categories="action arcade" onclick="openFullscreen('./games/SpaceInvaders-master/index.html')">
+      <div class="game-card" data-categories="action arcade" onclick="openFullscreen('./games/SpaceInvaders-master/index.html')" tabindex="0" role="button" aria-label="Play Space Invaders">
         <div class="game-icon">
-          <img src="game-icons/space-invaders-icon.png" alt="Space Invaders">
+          <img src="SpaceInvaders.png" alt="Space Invaders">
         </div>
         <h2>Space Invaders</h2>
       </div>
 
-      <div class="game-card" data-categories="puzzle" onclick="openFullscreen('./games/hextris-gh-pages/index.html')">
+      <div class="game-card" data-categories="puzzle" onclick="openFullscreen('./games/hextris-gh-pages/index.html')" tabindex="0" role="button" aria-label="Play Hextris">
         <div class="game-icon">
-          <img src="game-icons/hextris-icon.png" alt="Hextris">
+          <img src="Hextris.png" alt="Hextris">
         </div>
         <h2>Hextris</h2>
       </div>
 
-      <div class="game-card" data-categories="strategy" onclick="openFullscreen('./games/amongus/index.html')">
+      <div class="game-card" data-categories="strategy" onclick="openFullscreen('./games/amongus/index.html')" tabindex="0" role="button" aria-label="Play Among Us">
         <div class="game-icon">
-          <img src="game-icons/among-us-icon.png" alt="Among Us">
+          <img src="Amongus.png" alt="Among Us">
         </div>
         <h2>Among Us</h2>
       </div>
 
-      <div class="game-card" data-categories="action" onclick="openFullscreen('./games/asciispace/index.html')">
+      <div class="game-card" data-categories="action" onclick="openFullscreen('./games/asciispace/index.html')" tabindex="0" role="button" aria-label="Play Asciispace">
         <div class="game-icon">
-          <img src="game-icons/asciispace-icon.png" alt="Asciispace">
+          <img src="Asciispace.png" alt="Asciispace">
         </div>
         <h2>Asciispace</h2>
       </div>
 
-      <div class="game-card" data-categories="action arcade" onclick="openFullscreen('./games/asteroids/index.html')">
+      <div class="game-card" data-categories="action arcade" onclick="openFullscreen('./games/asteroids/index.html')" tabindex="0" role="button" aria-label="Play Asteroids">
         <div class="game-icon">
-          <img src="game-icons/asteroids-icon.png" alt="Asteroids">
+          <img src="Asteroids.png" alt="Asteroids">
         </div>
         <h2>Asteroids</h2>
       </div>
 
-      <div class="game-card" data-categories="puzzle" onclick="openFullscreen('./games/astray/index.html')">
+      <div class="game-card" data-categories="puzzle" onclick="openFullscreen('./games/astray/index.html')" tabindex="0" role="button" aria-label="Play Astray">
         <div class="game-icon">
-          <img src="game-icons/astray-icon.png" alt="Astray">
+          <img src="astray.png" alt="Astray">
         </div>
         <h2>Astray</h2>
       </div>
 
-      <div class="game-card" data-categories="adventure" onclick="openFullscreen('./games/backcountry/index.html')">
+      <div class="game-card" data-categories="adventure" onclick="openFullscreen('./games/backcountry/index.html')" tabindex="0" role="button" aria-label="Play Backcountry">
         <div class="game-icon">
-          <img src="game-icons/backcountry-icon.png" alt="Backcountry">
+          <img src="Backcountry.png" alt="Backcountry">
         </div>
         <h2>Backcountry</h2>
       </div>
 
-      <div class="game-card" data-categories="action" onclick="openFullscreen('./games/basketballstars/index.html')">
+      <div class="game-card" data-categories="action" onclick="openFullscreen('./games/basketballstars/index.html')" tabindex="0" role="button" aria-label="Play Basketball Stars">
         <div class="game-icon">
-          <img src="game-icons/basketball-stars-icon.png" alt="Basketball Stars">
+          <img src="Basketballstars.png" alt="Basketball Stars">
         </div>
         <h2>Basketball Stars</h2>
       </div>
 
-      <div class="game-card" data-categories="puzzle" onclick="openFullscreen('./games/blackholesquare/index.html')">
+      <div class="game-card" data-categories="puzzle" onclick="openFullscreen('./games/blackholesquare/index.html')" tabindex="0" role="button" aria-label="Play Blackhole Square">
         <div class="game-icon">
-          <img src="game-icons/blackhole-square-icon.png" alt="Blackhole Square">
+          <img src="Blackholesquare.png" alt="Blackhole Square">
         </div>
         <h2>Blackhole Square</h2>
       </div>
 
-      <div class="game-card" data-categories="puzzle" onclick="openFullscreen('./games/bounceback/index.html')">
+      <div class="game-card" data-categories="puzzle" onclick="openFullscreen('./games/bounceback/index.html')" tabindex="0" role="button" aria-label="Play Bounceback">
         <div class="game-icon">
-          <img src="game-icons/bounceback-icon.png" alt="Bounceback">
+          <img src="Bounceback.png" alt="Bounceback">
         </div>
         <h2>Bounceback</h2>
       </div>
 
-      <div class="game-card" data-categories="puzzle" onclick="openFullscreen('./games/breaklock/index.html')">
+      <div class="game-card" data-categories="puzzle" onclick="openFullscreen('./games/breaklock/index.html')" tabindex="0" role="button" aria-label="Play Breaklock">
         <div class="game-icon">
-          <img src="game-icons/breaklock-icon.png" alt="Breaklock">
+          <img src="Breaklock.png" alt="Breaklock">
         </div>
         <h2>Breaklock</h2>
       </div>
 
-      <div class="game-card" data-categories="arcade" onclick="openFullscreen('./games/breakout/index.html')">
+      <div class="game-card" data-categories="arcade" onclick="openFullscreen('./games/breakout/index.html')" tabindex="0" role="button" aria-label="Play Breakout">
         <div class="game-icon">
-          <img src="game-icons/breakout-icon.png" alt="Breakout">
+          <img src="Breakout.png" alt="Breakout">
         </div>
         <h2>Breakout</h2>
       </div>
 
-      <div class="game-card" data-categories="adventure" onclick="openFullscreen('./games/captaincallisto/index.html')">
+      <div class="game-card" data-categories="adventure" onclick="openFullscreen('./games/captaincallisto/index.html')" tabindex="0" role="button" aria-label="Play Captain Callisto">
         <div class="game-icon">
-          <img src="game-icons/captain-callisto-icon.png" alt="Captain Callisto">
+          <img src="CaptainCallisto.png" alt="Captain Callisto">
         </div>
         <h2>Captain Callisto</h2>
       </div>
 
-      <div class="game-card" data-categories="strategy" onclick="openFullscreen('./games/chess/index.html')">
+      <div class="game-card" data-categories="strategy" onclick="openFullscreen('./games/chess/index.html')" tabindex="0" role="button" aria-label="Play Chess">
         <div class="game-icon">
-          <img src="game-icons/chess-icon.png" alt="Chess">
+          <img src="chess.png" alt="Chess">
         </div>
         <h2>Chess</h2>
       </div>
 
-      <div class="game-card" data-categories="action" onclick="openFullscreen('./games/chromaincident/index.html')">
+      <div class="game-card" data-categories="action" onclick="openFullscreen('./games/chromaincident/index.html')" tabindex="0" role="button" aria-label="Play Chroma Incident">
         <div class="game-icon">
-          <img src="game-icons/chroma-incident-icon.png" alt="Chroma Incident">
+          <img src="chromaincident.png" alt="Chroma Incident">
         </div>
         <h2>Chroma Incident</h2>
       </div>
 
-      <div class="game-card" data-categories="arcade" onclick="openFullscreen('./games/chrome-dino/index.html')">
+      <div class="game-card" data-categories="arcade" onclick="openFullscreen('./games/chrome-dino/index.html')" tabindex="0" role="button" aria-label="Play Chrome Dino">
         <div class="game-icon">
-          <img src="game-icons/chrome-dino-icon.png" alt="Chrome Dino">
+          <img src="chromedinorun.png" alt="Chrome Dino">
         </div>
         <h2>Chrome Dino</h2>
       </div>
 
-      <div class="game-card" data-categories="puzzle" onclick="openFullscreen('./games/connect3/index.html')">
+      <div class="game-card" data-categories="puzzle" onclick="openFullscreen('./games/connect3/index.html')" tabindex="0" role="button" aria-label="Play Connect 3">
         <div class="game-icon">
-          <img src="game-icons/connect3-icon.png" alt="Connect 3">
+          <img src="connect3.png" alt="Connect 3">
         </div>
         <h2>Connect 3</h2>
       </div>
 
-      <div class="game-card" data-categories="strategy" onclick="openFullscreen('./games/cookieclicker/index.html')">
+      <div class="game-card" data-categories="strategy" onclick="openFullscreen('./games/cookieclicker/index.html')" tabindex="0" role="button" aria-label="Play Cookie Clicker">
         <div class="game-icon">
-          <img src="game-icons/cookie-clicker-icon.png" alt="Cookie Clicker">
+          <img src="cookieclicker.png" alt="Cookie Clicker">
         </div>
         <h2>Cookie Clicker</h2>
       </div>
 
-      <div class="game-card" data-categories="arcade" onclick="openFullscreen('./games/crossyroad/index.html')">
+      <div class="game-card" data-categories="arcade" onclick="openFullscreen('./games/crossyroad/index.html')" tabindex="0" role="button" aria-label="Play Crossy Road">
         <div class="game-icon">
-          <img src="game-icons/crossy-road-icon.png" alt="Crossy Road">
+          <img src="Crossyroad.png" alt="Crossy Road">
         </div>
         <h2>Crossy Road</h2>
       </div>
 
-      <div class="game-card" data-categories="action" onclick="openFullscreen('./games/geometrydash/index.html')">
+      <div class="game-card" data-categories="action" onclick="openFullscreen('./games/geometrydash/index.html')" tabindex="0" role="button" aria-label="Play Geometry Dash">
         <div class="game-icon">
-          <img src="game-icons/geometry-dash-icon.png" alt="Geometry Dash">
+          <img src="Geometrydash.png" alt="Geometry Dash">
         </div>
         <h2>Geometry Dash</h2>
       </div>
 
-      <div class="game-card" data-categories="puzzle" onclick="openFullscreen('./games/tetris/index.html')">
+      <div class="game-card" data-categories="puzzle" onclick="openFullscreen('./games/tetris/index.html')" tabindex="0" role="button" aria-label="Play Tetris">
         <div class="game-icon">
-          <img src="game-icons/tetris-icon.png" alt="Tetris">
+          <img src="Tetris.png" alt="Tetris">
         </div>
         <h2>Tetris</h2>
       </div>
 
-      <div class="game-card" data-categories="racing" onclick="openFullscreen('./games/racer/index.html')">
+      <div class="game-card" data-categories="racing" onclick="openFullscreen('./games/racer/index.html')" tabindex="0" role="button" aria-label="Play Racer">
         <div class="game-icon">
-          <img src="game-icons/racer-icon.png" alt="Racer">
+          <img src="Racer.png" alt="Racer">
         </div>
         <h2>Racer</h2>
       </div>
 
-      <div class="game-card" data-categories="arcade" onclick="openFullscreen('./games/snake/index.html')">
+      <div class="game-card" data-categories="arcade" onclick="openFullscreen('./games/snake/index.html')" tabindex="0" role="button" aria-label="Play Snake">
         <div class="game-icon">
-          <img src="game-icons/snake-icon.png" alt="Snake">
+          <img src="Snake.png" alt="Snake">
         </div>
         <h2>Snake</h2>
       </div>
 
-      <div class="game-card" data-categories="arcade" onclick="openFullscreen('./games/doodle-jump/index.html')">
+      <div class="game-card" data-categories="arcade" onclick="openFullscreen('./games/doodle-jump/index.html')" tabindex="0" role="button" aria-label="Play Doodle Jump">
         <div class="game-icon">
-          <img src="game-icons/doodle-jump-icon.png" alt="Doodle Jump">
+          <img src="Doodle jump.png" alt="Doodle Jump">
         </div>
         <h2>Doodle Jump</h2>
       </div>
@@ -652,14 +722,10 @@
       </div>
     </div>
 
-    <section class="share-section" style="text-align:center; margin: 50px 0;">
-      <button id="nativeShareBtn" style="font-size:1.4rem; padding:18px 35px; border-radius:15px; background:var(--cyber-gradient); color:#fff; border:none; cursor:pointer; margin-bottom:25px; transition:all 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow:0 8px 25px rgba(0,0,0,0.3);">Share This Site</button>
-      <div class="social-icons">
-        <a href="https://twitter.com/intent/tweet?text=Play%20free%20online%20games%20at%20Cresenty%20Games!%20https://cresenty.games/" class="icon" target="_blank" aria-label="Share on Twitter"><i class="fab fa-twitter"></i></a>
-        <a href="https://www.facebook.com/sharer/sharer.php?u=https://cresenty.games/" class="icon" target="_blank" aria-label="Share on Facebook"><i class="fab fa-facebook"></i></a>
-        <a href="https://t.me/share/url?url=https://cresenty.games/&text=Play%20free%20online%20games%20at%20Cresenty%20Games!" class="icon" target="_blank" aria-label="Share on Telegram"><i class="fab fa-telegram"></i></a>
-        <a href="https://wa.me/?text=Play%20free%20online%20games%20at%20Cresenty%20Games!%20https://cresenty.games/" class="icon" target="_blank" aria-label="Share on WhatsApp"><i class="fab fa-whatsapp"></i></a>
-      </div>
+    <section class="share-section">
+      <button id="nativeShareBtn">
+        <span><i class="fas fa-share-alt"></i> Share This Site</span>
+      </button>
     </section>
   </main>
 
