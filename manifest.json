@@ -1,0 +1,21 @@
+{
+  "name": "Cresenty Games",
+  "short_name": "Cresenty",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#1e1e1e",
+  "theme_color": "#ff6f61",
+  "description": "Play Scout X, Flappy Bird, 2048, Pacman, and more online for free!",
+  "icons": [
+    {
+      "src": "favicon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "favicon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+} 
