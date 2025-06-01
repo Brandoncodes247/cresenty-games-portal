@@ -55,6 +55,10 @@
       --glass-bg: rgba(255, 255, 255, 0.1);
       --glass-border: rgba(255, 255, 255, 0.2);
       --cyber-gradient: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+      --achievement-gold: #ffd700;
+      --achievement-silver: #c0c0c0;
+      --achievement-bronze: #cd7f32;
+      --money-color: #00c853;
     }
 
     * {
@@ -166,6 +170,8 @@
       transition: transform 0.3s ease;
       border: 2px solid var(--primary-color);
       cursor: pointer;
+      position: relative;
+      overflow: hidden;
     }
 
     .game-card:hover {
@@ -491,9 +497,956 @@
         display: none !important;
       }
     }
+
+    .like-dislike-container {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 15px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .like-btn, .dislike-btn {
+      background: none;
+      border: none;
+      color: var(--text-color);
+      font-size: 1.2rem;
+      cursor: pointer;
+      padding: 5px 10px;
+      border-radius: 15px;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .like-btn:hover {
+      color: #4CAF50;
+      background: rgba(76, 175, 80, 0.1);
+    }
+
+    .dislike-btn:hover {
+      color: #f44336;
+      background: rgba(244, 67, 54, 0.1);
+    }
+
+    .like-btn.active {
+      color: #4CAF50;
+    }
+
+    .dislike-btn.active {
+      color: #f44336;
+    }
+
+    .like-count, .dislike-count {
+      font-size: 0.9rem;
+      color: var(--text-color);
+      opacity: 0.8;
+    }
+
+    .game-card:hover .like-dislike-container {
+      opacity: 1;
+    }
+
+    /* Achievement System Styles */
+    .achievement-badge {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--card-bg);
+      border: 2px solid var(--achievement-gold);
+      border-radius: 10px;
+      padding: 15px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      transform: translateX(120%);
+      transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      z-index: 1000;
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+    }
+
+    .achievement-badge.show {
+      transform: translateX(0);
+    }
+
+    .achievement-icon {
+      font-size: 2rem;
+      color: var(--achievement-gold);
+    }
+
+    .achievement-info h3 {
+      color: var(--achievement-gold);
+      margin: 0;
+      font-size: 1.1rem;
+    }
+
+    .achievement-info p {
+      margin: 5px 0 0;
+      font-size: 0.9rem;
+      color: var(--text-color);
+    }
+
+    /* Points Display */
+    .points-display {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--card-bg);
+      border: 2px solid var(--primary-color);
+      border-radius: 10px;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 1000;
+      box-shadow: 0 0 15px rgba(255, 111, 97, 0.3);
+    }
+
+    .points-display i {
+      color: var(--primary-color);
+      font-size: 1.2rem;
+    }
+
+    .points-display span {
+      color: var(--text-color);
+      font-weight: bold;
+    }
+
+    /* Streak System */
+    .streak-display {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: var(--card-bg);
+      border: 2px solid var(--secondary-color);
+      border-radius: 10px;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 1000;
+      box-shadow: 0 0 15px rgba(76, 201, 240, 0.3);
+    }
+
+    .streak-display i {
+      color: var(--secondary-color);
+      font-size: 1.2rem;
+    }
+
+    .streak-display span {
+      color: var(--text-color);
+      font-weight: bold;
+    }
+
+    /* Game Card Enhancements */
+    .game-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.6s;
+    }
+
+    .game-card:hover::before {
+      transform: translateX(100%);
+    }
+
+    .game-stats {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      display: flex;
+      gap: 10px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .game-card:hover .game-stats {
+      opacity: 1;
+    }
+
+    .stat-item {
+      background: rgba(0, 0, 0, 0.7);
+      padding: 5px 10px;
+      border-radius: 15px;
+      font-size: 0.8rem;
+      color: var(--text-color);
+    }
+
+    /* Daily Rewards */
+    .daily-reward {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background: var(--card-bg);
+      border: 2px solid var(--accent-color);
+      border-radius: 10px;
+      padding: 15px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      z-index: 1000;
+      box-shadow: 0 0 15px rgba(247, 37, 133, 0.3);
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+
+    .daily-reward:hover {
+      transform: scale(1.05);
+    }
+
+    .daily-reward i {
+      color: var(--accent-color);
+      font-size: 1.5rem;
+    }
+
+    .daily-reward-info h3 {
+      color: var(--accent-color);
+      margin: 0;
+      font-size: 1.1rem;
+    }
+
+    .daily-reward-info p {
+      margin: 5px 0 0;
+      font-size: 0.9rem;
+      color: var(--text-color);
+    }
+
+    /* Progress Bar Enhancement */
+    .progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: var(--cyber-gradient);
+      transform-origin: 0 50%;
+      transform: scaleX(0);
+      transition: transform 0.3s;
+      z-index: 1001;
+    }
+
+    /* Easter Egg Animation */
+    @keyframes rainbow {
+      0% { filter: hue-rotate(0deg); }
+      100% { filter: hue-rotate(360deg); }
+    }
+
+    .easter-egg {
+      animation: rainbow 3s linear infinite;
+    }
+
+    /* Money Reward System */
+    .money-reward {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      background: var(--card-bg);
+      border: 3px solid var(--money-color);
+      border-radius: 20px;
+      padding: 30px;
+      text-align: center;
+      z-index: 2000;
+      transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      box-shadow: 0 0 30px rgba(0, 200, 83, 0.3);
+    }
+
+    .money-reward.show {
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .money-reward i {
+      font-size: 4rem;
+      color: var(--money-color);
+      margin-bottom: 20px;
+    }
+
+    .money-reward h2 {
+      color: var(--money-color);
+      font-size: 2rem;
+      margin-bottom: 15px;
+    }
+
+    .money-reward p {
+      color: var(--text-color);
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+    }
+
+    .money-reward button {
+      background: var(--money-color);
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 25px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .money-reward button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 200, 83, 0.4);
+    }
+
+    /* Money Progress Bar */
+    .money-progress {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--card-bg);
+      border: 2px solid var(--money-color);
+      border-radius: 10px;
+      padding: 15px;
+      width: 300px;
+      z-index: 1000;
+    }
+
+    .money-progress h3 {
+      color: var(--money-color);
+      margin: 0 0 10px 0;
+      font-size: 1.1rem;
+    }
+
+    .progress-container {
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 10px;
+      height: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .progress-bar-money {
+      background: var(--money-color);
+      height: 100%;
+      width: 0%;
+      transition: width 0.5s ease;
+      position: relative;
+    }
+
+    .progress-bar-money::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      animation: shimmer 2s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    .progress-text {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 5px;
+      font-size: 0.9rem;
+      color: var(--text-color);
+    }
+
+    /* Enhanced Game Card */
+    .game-card {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .game-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.6s;
+    }
+
+    .game-card:hover::after {
+      transform: translateX(100%);
+    }
+
+    .game-card .points-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: var(--money-color);
+      color: white;
+      padding: 5px 10px;
+      border-radius: 15px;
+      font-size: 0.8rem;
+      opacity: 0;
+      transform: translateY(-10px);
+      transition: all 0.3s;
+    }
+
+    .game-card:hover .points-badge {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Money Animation */
+    @keyframes moneyRain {
+      0% { transform: translateY(-100%) rotate(0deg); }
+      100% { transform: translateY(100vh) rotate(360deg); }
+    }
+
+    .money-particle {
+      position: fixed;
+      color: var(--money-color);
+      font-size: 2rem;
+      pointer-events: none;
+      z-index: 1000;
+      animation: moneyRain 3s linear forwards;
+    }
+
+    /* Enhanced Achievement Badge */
+    .achievement-badge {
+      background: linear-gradient(45deg, var(--card-bg), rgba(51, 51, 51, 0.8));
+      backdrop-filter: blur(10px);
+    }
+
+    .achievement-badge::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(45deg, var(--achievement-gold), var(--money-color));
+      z-index: -1;
+      border-radius: 12px;
+      animation: borderGlow 2s linear infinite;
+    }
+
+    @keyframes borderGlow {
+      0% { opacity: 0.5; }
+      50% { opacity: 1; }
+      100% { opacity: 0.5; }
+    }
+
+    .reward-explainer {
+      background: linear-gradient(135deg, rgba(30, 30, 30, 0.95), rgba(20, 20, 20, 0.98));
+      border: 2px solid var(--primary-color);
+      border-radius: 20px;
+      margin: 20px auto;
+      max-width: 1200px;
+      padding: 30px;
+      box-shadow: 0 0 30px rgba(255, 111, 97, 0.2);
+      backdrop-filter: blur(10px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .reward-explainer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+      animation: borderGlow 3s linear infinite;
+    }
+
+    @keyframes borderGlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .reward-content {
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .reward-header {
+      margin-bottom: 40px;
+      position: relative;
+    }
+
+    .reward-header h2 {
+      font-size: 2.8rem;
+      color: var(--text-color);
+      text-shadow: 0 0 10px rgba(255, 111, 97, 0.5);
+      font-family: var(--font-secondary);
+      margin-bottom: 10px;
+      background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 1px;
+    }
+
+    .subtitle {
+      color: var(--primary-color);
+      font-size: 1.2rem;
+      font-family: var(--font-primary);
+      opacity: 0.9;
+      letter-spacing: 0.5px;
+    }
+
+    .reward-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      margin: 30px 0;
+    }
+
+    .reward-card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 15px;
+      padding: 25px;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(5px);
+    }
+
+    .reward-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, transparent, rgba(255, 111, 97, 0.1), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.6s;
+    }
+
+    .reward-card:hover::before {
+      transform: translateX(100%);
+    }
+
+    .reward-card:hover {
+      transform: translateY(-5px);
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      border-color: var(--primary-color);
+    }
+
+    .reward-card i {
+      font-size: 2rem;
+      color: var(--primary-color);
+      margin-bottom: 15px;
+      transition: transform 0.3s ease;
+    }
+
+    .reward-card:hover i {
+      transform: scale(1.1);
+    }
+
+    .reward-card h3 {
+      color: var(--secondary-color);
+      font-size: 1.4rem;
+      margin-bottom: 12px;
+      font-family: var(--font-secondary);
+      letter-spacing: 0.5px;
+    }
+
+    .reward-card p {
+      color: var(--text-color);
+      font-size: 1.1rem;
+      line-height: 1.5;
+      opacity: 0.9;
+    }
+
+    .trust-badges {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin: 30px 0;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-color);
+      font-size: 1.1rem;
+      padding: 10px 20px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 25px;
+      transition: all 0.3s ease;
+    }
+
+    .badge:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .badge i {
+      color: var(--primary-color);
+      font-size: 1.3rem;
+    }
+
+    .reward-stats {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin: 30px 0;
+      flex-wrap: wrap;
+    }
+
+    .stat {
+      text-align: center;
+      padding: 15px 25px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 15px;
+      transition: all 0.3s ease;
+    }
+
+    .stat:hover {
+      background: rgba(255, 255, 255, 0.08);
+      transform: translateY(-2px);
+    }
+
+    .stat-number {
+      display: block;
+      font-size: 2rem;
+      color: var(--primary-color);
+      font-weight: bold;
+      font-family: var(--font-secondary);
+      margin-bottom: 5px;
+    }
+
+    .stat-label {
+      color: var(--text-color);
+      font-size: 1rem;
+      opacity: 0.9;
+    }
+
+    .reward-tagline {
+      font-size: 1.3rem;
+      color: var(--accent-color);
+      margin-top: 20px;
+      font-family: var(--font-secondary);
+      text-shadow: 0 0 10px rgba(247, 37, 133, 0.3);
+      letter-spacing: 0.5px;
+    }
+
+    @media (max-width: 768px) {
+      .reward-header h2 {
+        font-size: 2rem;
+      }
+
+      .reward-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .reward-stats {
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .trust-badges {
+        flex-direction: column;
+        gap: 15px;
+      }
+    }
+
+    /* Add these new styles in the style section */
+    .progress-milestones {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 30px auto;
+      max-width: 800px;
+      position: relative;
+      padding: 20px 0;
+    }
+
+    .progress-milestones::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+      transform: translateY(-50%);
+      z-index: 1;
+    }
+
+    .milestone {
+      background: var(--card-bg);
+      border: 2px solid var(--primary-color);
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 2;
+      transition: all 0.3s ease;
+    }
+
+    .milestone i {
+      color: var(--primary-color);
+      font-size: 1.5rem;
+    }
+
+    .milestone span {
+      position: absolute;
+      bottom: -30px;
+      white-space: nowrap;
+      font-size: 0.9rem;
+      color: var(--text-color);
+    }
+
+    .milestone.completed {
+      background: var(--primary-color);
+      transform: scale(1.1);
+    }
+
+    .milestone.completed i {
+      color: white;
+    }
+
+    .milestone.current {
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    .reward-card {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .reward-card p {
+      line-height: 1.8;
+    }
+
+    .reward-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+
+    .reward-card:hover::after {
+      transform: scaleX(1);
+    }
+
+    /* Add these new styles */
+    .live-stats {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin: 20px 0;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 15px;
+      backdrop-filter: blur(10px);
+    }
+
+    .live-stat {
+      text-align: center;
+      padding: 15px 25px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      transition: transform 0.3s ease;
+    }
+
+    .live-stat:hover {
+      transform: translateY(-5px);
+    }
+
+    .live-stat i {
+      font-size: 2rem;
+      color: var(--primary-color);
+      margin-bottom: 10px;
+    }
+
+    .live-stat .counter {
+      display: block;
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: var(--text-color);
+      margin: 5px 0;
+    }
+
+    .live-stat .label {
+      font-size: 0.9rem;
+      color: var(--text-color);
+      opacity: 0.8;
+    }
+
+    .card-footer {
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .highlight {
+      color: var(--primary-color);
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
+
+    .recent-rewards {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 15px;
+      padding: 20px;
+      margin: 30px 0;
+    }
+
+    .recent-rewards h3 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: var(--primary-color);
+    }
+
+    .rewards-list {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .reward-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      transition: transform 0.3s ease;
+    }
+
+    .reward-item:hover {
+      transform: translateX(10px);
+    }
+
+    .reward-item i {
+      color: var(--primary-color);
+    }
+
+    .reward-item .time {
+      margin-left: auto;
+      font-size: 0.8rem;
+      opacity: 0.7;
+    }
+
+    .reward-item {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      padding: 15px;
+      transition: all 0.3s ease;
+    }
+
+    .reward-item:hover {
+      transform: translateX(10px);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .reward-content {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .reward-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .reward-name {
+      font-weight: bold;
+      color: var(--primary-color);
+    }
+
+    .reward-amount {
+      color: var(--money-color);
+      font-weight: bold;
+    }
+
+    .reward-message {
+      color: var(--text-color);
+      font-size: 0.9rem;
+      opacity: 0.9;
+      margin: 5px 0;
+    }
+
+    .time {
+      font-size: 0.8rem;
+      color: var(--text-color);
+      opacity: 0.7;
+    }
   </style>
 </head>
 <body>
+  <div class="progress-bar"></div>
+  
+  <div class="points-display">
+    <i class="fas fa-star"></i>
+    <span id="points">0</span>
+  </div>
+
+  <div class="streak-display">
+    <i class="fas fa-fire"></i>
+    <span id="streak">0</span> Day Streak
+  </div>
+
+  <div class="money-progress">
+    <h3>Money Reward Progress</h3>
+    <div class="progress-container">
+      <div class="progress-bar-money" id="moneyProgress"></div>
+    </div>
+    <div class="progress-text">
+      <span id="currentPoints">0</span>
+      <span>/ 100,000 points</span>
+    </div>
+  </div>
+
+  <div class="money-reward" id="moneyReward">
+    <i class="fas fa-dollar-sign"></i>
+    <h2>Congratulations!</h2>
+    <p>You've earned $10.00!</p>
+    <button onclick="claimMoneyReward()">Claim Reward</button>
+  </div>
+
+  <div class="daily-reward" id="dailyReward">
+    <i class="fas fa-gift"></i>
+    <div class="daily-reward-info">
+      <h3>Daily Reward</h3>
+      <p>Click to claim your reward!</p>
+    </div>
+  </div>
+
+  <div class="achievement-badge" id="achievementBadge">
+    <i class="fas fa-trophy achievement-icon"></i>
+    <div class="achievement-info">
+      <h3>Achievement Unlocked!</h3>
+      <p id="achievementText">First Game Played</p>
+    </div>
+  </div>
+
   <main>
     <header>
       <img src="Cresenty Logo.jpg" alt="Cresenty Studio Logo" class="logo" loading="eager">
@@ -506,7 +1459,114 @@
       </div>
     </header>
 
-    <div class="progress-bar"></div>
+    <div class="reward-explainer">
+      <div class="reward-content">
+        <div class="reward-header">
+          <h2>Play Games, Earn Real Money</h2>
+          <p class="subtitle">Start your journey to rewards today</p>
+          <div class="live-stats">
+            <div class="live-stat">
+              <i class="fas fa-bolt"></i>
+              <span class="label">Instant Rewards</span>
+            </div>
+            <div class="live-stat">
+              <i class="fas fa-shield-alt"></i>
+              <span class="label">Secure Platform</span>
+            </div>
+            <div class="live-stat">
+              <i class="fas fa-headset"></i>
+              <span class="label">24/7 Support</span>
+            </div>
+          </div>
+        </div>
+        <div class="reward-grid">
+          <div class="reward-card">
+            <i class="fas fa-bolt"></i>
+            <h3>Quick Points Guide</h3>
+            <p>• Play any game: +2 points<br>
+               • First time playing: +5 points<br>
+               • Daily login: +10 points<br>
+               • 3-day streak: 2x points<br>
+               • 7-day streak: 3x points</p>
+            <div class="card-footer">
+              <span class="highlight">Start earning points today!</span>
+            </div>
+          </div>
+          <div class="reward-card">
+            <i class="fas fa-fire"></i>
+            <h3>Smart Timing</h3>
+            <p>• Peak hours (6 PM - 10 PM): 1.5x points<br>
+               • Weekend bonus: 2x points<br>
+               • Special events: 3x points<br>
+               • New game releases: 5x points</p>
+            <div class="card-footer">
+              <span class="highlight">Maximize your earnings!</span>
+            </div>
+          </div>
+          <div class="reward-card">
+            <i class="fas fa-trophy"></i>
+            <h3>Quick Milestones</h3>
+            <p>• 1,000 points: Achievement badge<br>
+               • 5,000 points: Special effects<br>
+               • 10,000 points: Custom avatar<br>
+               • 25,000 points: VIP status</p>
+            <div class="card-footer">
+              <span class="highlight">New rewards added weekly!</span>
+            </div>
+          </div>
+          <div class="reward-card">
+            <i class="fas fa-gift"></i>
+            <h3>Reward Path</h3>
+            <p>• 100,000 points = $10 reward<br>
+               • Instant PayPal transfer<br>
+               • No minimum withdrawal<br>
+               • 24/7 support</p>
+            <div class="card-footer">
+              <span class="highlight">Instant payments, no waiting!</span>
+            </div>
+          </div>
+        </div>
+        <div class="reward-footer">
+          <div class="trust-badges">
+            <div class="badge">
+              <i class="fas fa-shield-alt"></i>
+              <span>Secure Platform</span>
+            </div>
+            <div class="badge">
+              <i class="fas fa-check-circle"></i>
+              <span>Instant Rewards</span>
+            </div>
+            <div class="badge">
+              <i class="fas fa-headset"></i>
+              <span>24/7 Support</span>
+            </div>
+          </div>
+          <div class="progress-milestones">
+            <div class="milestone">
+              <i class="fas fa-star"></i>
+              <span>1,000 points</span>
+            </div>
+            <div class="milestone">
+              <i class="fas fa-star"></i>
+              <span>5,000 points</span>
+            </div>
+            <div class="milestone">
+              <i class="fas fa-star"></i>
+              <span>10,000 points</span>
+            </div>
+            <div class="milestone">
+              <i class="fas fa-star"></i>
+              <span>25,000 points</span>
+            </div>
+            <div class="milestone">
+              <i class="fas fa-trophy"></i>
+              <span>100,000 points</span>
+            </div>
+          </div>
+          <p class="reward-tagline">Start your journey today. Every game brings you closer to rewards!</p>
+        </div>
+      </div>
+    </div>
 
     <section class="game-categories">
       <button class="category-btn active" data-category="all">All Games</button>
@@ -524,6 +1584,16 @@
           <img src="ScoutX.jpg" alt="Scout X">
         </div>
         <h2>Scout X</h2>
+        <div class="like-dislike-container" onclick="event.stopPropagation()">
+          <button class="like-btn" onclick="handleLike(this, 'scout-x')">
+            <i class="fas fa-thumbs-up"></i>
+            <span class="like-count">0</span>
+          </button>
+          <button class="dislike-btn" onclick="handleDislike(this, 'scout-x')">
+            <i class="fas fa-thumbs-down"></i>
+            <span class="dislike-count">0</span>
+          </button>
+        </div>
       </div>
 
       <div class="game-card" data-categories="arcade" onclick="openFullscreen('./games/floppybird-gh-pages/index.html')" tabindex="0" role="button" aria-label="Play Flappy Bird">
@@ -531,6 +1601,16 @@
           <img src="Flappybird.png" alt="Flappy Bird">
         </div>
         <h2>Flappy Bird</h2>
+        <div class="like-dislike-container" onclick="event.stopPropagation()">
+          <button class="like-btn" onclick="handleLike(this, 'flappy-bird')">
+            <i class="fas fa-thumbs-up"></i>
+            <span class="like-count">0</span>
+          </button>
+          <button class="dislike-btn" onclick="handleDislike(this, 'flappy-bird')">
+            <i class="fas fa-thumbs-down"></i>
+            <span class="dislike-count">0</span>
+          </button>
+        </div>
       </div>
 
       <div class="game-card" data-categories="puzzle" onclick="openFullscreen('./games/2048-master/index.html')" tabindex="0" role="button" aria-label="Play 2048">
@@ -538,6 +1618,16 @@
           <img src="2048.png" alt="2048">
         </div>
         <h2>2048</h2>
+        <div class="like-dislike-container" onclick="event.stopPropagation()">
+          <button class="like-btn" onclick="handleLike(this, '2048')">
+            <i class="fas fa-thumbs-up"></i>
+            <span class="like-count">0</span>
+          </button>
+          <button class="dislike-btn" onclick="handleDislike(this, '2048')">
+            <i class="fas fa-thumbs-down"></i>
+            <span class="dislike-count">0</span>
+          </button>
+        </div>
       </div>
 
       <div class="game-card desktop-game" data-categories="racing" onclick="openFullscreen('./games/HexGL-master/index.html')" tabindex="0" role="button" aria-label="Play Hex-GL">
@@ -545,6 +1635,16 @@
           <img src="Hex-Gl.png" alt="Hex-GL">
         </div>
         <h2>Hex-GL</h2>
+        <div class="like-dislike-container" onclick="event.stopPropagation()">
+          <button class="like-btn" onclick="handleLike(this, 'hex-gl')">
+            <i class="fas fa-thumbs-up"></i>
+            <span class="like-count">0</span>
+          </button>
+          <button class="dislike-btn" onclick="handleDislike(this, 'hex-gl')">
+            <i class="fas fa-thumbs-down"></i>
+            <span class="dislike-count">0</span>
+          </button>
+        </div>
       </div>
 
       <div class="game-card" data-categories="arcade" onclick="openFullscreen('./games/pacman-master/index.html')" tabindex="0" role="button" aria-label="Play Pacman">
@@ -552,6 +1652,16 @@
           <img src="Pacman.png" alt="Pacman">
         </div>
         <h2>Pacman</h2>
+        <div class="like-dislike-container" onclick="event.stopPropagation()">
+          <button class="like-btn" onclick="handleLike(this, 'pacman')">
+            <i class="fas fa-thumbs-up"></i>
+            <span class="like-count">0</span>
+          </button>
+          <button class="dislike-btn" onclick="handleDislike(this, 'pacman')">
+            <i class="fas fa-thumbs-down"></i>
+            <span class="dislike-count">0</span>
+          </button>
+        </div>
       </div>
 
       <div class="game-card desktop-game" data-categories="action arcade" onclick="openFullscreen('./games/SpaceInvaders-master/index.html')" tabindex="0" role="button" aria-label="Play Space Invaders">
@@ -559,6 +1669,16 @@
           <img src="SpaceInvaders.png" alt="Space Invaders">
         </div>
         <h2>Space Invaders</h2>
+        <div class="like-dislike-container" onclick="event.stopPropagation()">
+          <button class="like-btn" onclick="handleLike(this, 'space-invaders')">
+            <i class="fas fa-thumbs-up"></i>
+            <span class="like-count">0</span>
+          </button>
+          <button class="dislike-btn" onclick="handleDislike(this, 'space-invaders')">
+            <i class="fas fa-thumbs-down"></i>
+            <span class="dislike-count">0</span>
+          </button>
+        </div>
       </div>
 
       <div class="game-card" data-categories="puzzle" onclick="openFullscreen('./games/hextris-gh-pages/index.html')" tabindex="0" role="button" aria-label="Play Hextris">
@@ -566,6 +1686,16 @@
           <img src="Hextris.png" alt="Hextris">
         </div>
         <h2>Hextris</h2>
+        <div class="like-dislike-container" onclick="event.stopPropagation()">
+          <button class="like-btn" onclick="handleLike(this, 'hextris')">
+            <i class="fas fa-thumbs-up"></i>
+            <span class="like-count">0</span>
+          </button>
+          <button class="dislike-btn" onclick="handleDislike(this, 'hextris')">
+            <i class="fas fa-thumbs-down"></i>
+            <span class="dislike-count">0</span>
+          </button>
+        </div>
       </div>
 
       <div class="game-card" data-categories="strategy" onclick="openFullscreen('./games/amongus/index.html')" tabindex="0" role="button" aria-label="Play Among Us">
@@ -573,6 +1703,16 @@
           <img src="Amongus.png" alt="Among Us">
         </div>
         <h2>Among Us</h2>
+        <div class="like-dislike-container" onclick="event.stopPropagation()">
+          <button class="like-btn" onclick="handleLike(this, 'among-us')">
+            <i class="fas fa-thumbs-up"></i>
+            <span class="like-count">0</span>
+          </button>
+          <button class="dislike-btn" onclick="handleDislike(this, 'among-us')">
+            <i class="fas fa-thumbs-down"></i>
+            <span class="dislike-count">0</span>
+          </button>
+        </div>
       </div>
 
       <div class="game-card desktop-game" data-categories="action" onclick="openFullscreen('./games/asciispace/index.html')" tabindex="0" role="button" aria-label="Play Asciispace">
@@ -580,6 +1720,16 @@
           <img src="Asciispace.png" alt="Asciispace">
         </div>
         <h2>Asciispace</h2>
+        <div class="like-dislike-container" onclick="event.stopPropagation()">
+          <button class="like-btn" onclick="handleLike(this, 'asciispace')">
+            <i class="fas fa-thumbs-up"></i>
+            <span class="like-count">0</span>
+          </button>
+          <button class="dislike-btn" onclick="handleDislike(this, 'asciispace')">
+            <i class="fas fa-thumbs-down"></i>
+            <span class="dislike-count">0</span>
+          </button>
+        </div>
       </div>
 
       <div class="game-card desktop-game" data-categories="action arcade" onclick="openFullscreen('./games/asteroids/index.html')" tabindex="0" role="button" aria-label="Play Asteroids">
@@ -587,6 +1737,16 @@
           <img src="Asteroids.png" alt="Asteroids">
         </div>
         <h2>Asteroids</h2>
+        <div class="like-dislike-container" onclick="event.stopPropagation()">
+          <button class="like-btn" onclick="handleLike(this, 'asteroids')">
+            <i class="fas fa-thumbs-up"></i>
+            <span class="like-count">0</span>
+          </button>
+          <button class="dislike-btn" onclick="handleDislike(this, 'asteroids')">
+            <i class="fas fa-thumbs-down"></i>
+            <span class="dislike-count">0</span>
+          </button>
+        </div>
       </div>
 
       <div class="game-card" data-categories="puzzle" onclick="openFullscreen('./games/astray/index.html')" tabindex="0" role="button" aria-label="Play Astray">
@@ -594,6 +1754,16 @@
           <img src="astray.png" alt="Astray">
         </div>
         <h2>Astray</h2>
+        <div class="like-dislike-container" onclick="event.stopPropagation()">
+          <button class="like-btn" onclick="handleLike(this, 'astray')">
+            <i class="fas fa-thumbs-up"></i>
+            <span class="like-count">0</span>
+          </button>
+          <button class="dislike-btn" onclick="handleDislike(this, 'astray')">
+            <i class="fas fa-thumbs-down"></i>
+            <span class="dislike-count">0</span>
+          </button>
+        </div>
       </div>
 
       <div class="game-card" data-categories="adventure" onclick="openFullscreen('./games/backcountry/index.html')" tabindex="0" role="button" aria-label="Play Backcountry">
@@ -601,6 +1771,16 @@
           <img src="Backcountry.png" alt="Backcountry">
         </div>
         <h2>Backcountry</h2>
+        <div class="like-dislike-container" onclick="event.stopPropagation()">
+          <button class="like-btn" onclick="handleLike(this, 'backcountry')">
+            <i class="fas fa-thumbs-up"></i>
+            <span class="like-count">0</span>
+          </button>
+          <button class="dislike-btn" onclick="handleDislike(this, 'backcountry')">
+            <i class="fas fa-thumbs-down"></i>
+            <span class="dislike-count">0</span>
+          </button>
+        </div>
       </div>
 
       <div class="game-card" data-categories="action" onclick="openFullscreen('./games/basketballstars/index.html')" tabindex="0" role="button" aria-label="Play Basketball Stars">
@@ -608,6 +1788,16 @@
           <img src="Basketballstars.png" alt="Basketball Stars">
         </div>
         <h2>Basketball Stars</h2>
+        <div class="like-dislike-container" onclick="event.stopPropagation()">
+          <button class="like-btn" onclick="handleLike(this, 'basketball-stars')">
+            <i class="fas fa-thumbs-up"></i>
+            <span class="like-count">0</span>
+          </button>
+          <button class="dislike-btn" onclick="handleDislike(this, 'basketball-stars')">
+            <i class="fas fa-thumbs-down"></i>
+            <span class="dislike-count">0</span>
+          </button>
+        </div>
       </div>
 
       <div class="game-card" data-categories="puzzle" onclick="openFullscreen('./games/blackholesquare/index.html')" tabindex="0" role="button" aria-label="Play Blackhole Square">
@@ -615,6 +1805,16 @@
           <img src="Blackholesquare.png" alt="Blackhole Square">
         </div>
         <h2>Blackhole Square</h2>
+        <div class="like-dislike-container" onclick="event.stopPropagation()">
+          <button class="like-btn" onclick="handleLike(this, 'blackhole-square')">
+            <i class="fas fa-thumbs-up"></i>
+            <span class="like-count">0</span>
+          </button>
+          <button class="dislike-btn" onclick="handleDislike(this, 'blackhole-square')">
+            <i class="fas fa-thumbs-down"></i>
+            <span class="dislike-count">0</span>
+          </button>
+        </div>
       </div>
 
       <div class="game-card" data-categories="puzzle" onclick="openFullscreen('./games/bounceback/index.html')" tabindex="0" role="button" aria-label="Play Bounceback">
@@ -622,6 +1822,16 @@
           <img src="Bounceback.png" alt="Bounceback">
         </div>
         <h2>Bounceback</h2>
+        <div class="like-dislike-container" onclick="event.stopPropagation()">
+          <button class="like-btn" onclick="handleLike(this, 'bounceback')">
+            <i class="fas fa-thumbs-up"></i>
+            <span class="like-count">0</span>
+          </button>
+          <button class="dislike-btn" onclick="handleDislike(this, 'bounceback')">
+            <i class="fas fa-thumbs-down"></i>
+            <span class="dislike-count">0</span>
+          </button>
+        </div>
       </div>
 
       <div class="game-card" data-categories="puzzle" onclick="openFullscreen('./games/breaklock/index.html')" tabindex="0" role="button" aria-label="Play Breaklock">
@@ -629,6 +1839,16 @@
           <img src="Breaklock.png" alt="Breaklock">
         </div>
         <h2>Breaklock</h2>
+        <div class="like-dislike-container" onclick="event.stopPropagation()">
+          <button class="like-btn" onclick="handleLike(this, 'breaklock')">
+            <i class="fas fa-thumbs-up"></i>
+            <span class="like-count">0</span>
+          </button>
+          <button class="dislike-btn" onclick="handleDislike(this, 'breaklock')">
+            <i class="fas fa-thumbs-down"></i>
+            <span class="dislike-count">0</span>
+          </button>
+        </div>
       </div>
 
       <div class="game-card" data-categories="arcade" onclick="openFullscreen('./games/breakout/index.html')" tabindex="0" role="button" aria-label="Play Breakout">
@@ -636,6 +1856,16 @@
           <img src="Breakout.png" alt="Breakout">
         </div>
         <h2>Breakout</h2>
+        <div class="like-dislike-container" onclick="event.stopPropagation()">
+          <button class="like-btn" onclick="handleLike(this, 'breakout')">
+            <i class="fas fa-thumbs-up"></i>
+            <span class="like-count">0</span>
+          </button>
+          <button class="dislike-btn" onclick="handleDislike(this, 'breakout')">
+            <i class="fas fa-thumbs-down"></i>
+            <span class="dislike-count">0</span>
+          </button>
+        </div>
       </div>
 
       <div class="game-card" data-categories="adventure" onclick="openFullscreen('./games/captaincallisto/index.html')" tabindex="0" role="button" aria-label="Play Captain Callisto">
@@ -643,6 +1873,16 @@
           <img src="CaptainCallisto.png" alt="Captain Callisto">
         </div>
         <h2>Captain Callisto</h2>
+        <div class="like-dislike-container" onclick="event.stopPropagation()">
+          <button class="like-btn" onclick="handleLike(this, 'captain-callisto')">
+            <i class="fas fa-thumbs-up"></i>
+            <span class="like-count">0</span>
+          </button>
+          <button class="dislike-btn" onclick="handleDislike(this, 'captain-callisto')">
+            <i class="fas fa-thumbs-down"></i>
+            <span class="dislike-count">0</span>
+          </button>
+        </div>
       </div>
 
       <div class="game-card" data-categories="strategy" onclick="openFullscreen('./games/chess/index.html')" tabindex="0" role="button" aria-label="Play Chess">
@@ -650,6 +1890,16 @@
           <img src="chess.png" alt="Chess">
         </div>
         <h2>Chess</h2>
+        <div class="like-dislike-container" onclick="event.stopPropagation()">
+          <button class="like-btn" onclick="handleLike(this, 'chess')">
+            <i class="fas fa-thumbs-up"></i>
+            <span class="like-count">0</span>
+          </button>
+          <button class="dislike-btn" onclick="handleDislike(this, 'chess')">
+            <i class="fas fa-thumbs-down"></i>
+            <span class="dislike-count">0</span>
+          </button>
+        </div>
       </div>
 
       <div class="game-card desktop-game" data-categories="action" onclick="openFullscreen('./games/chromaincident/index.html')" tabindex="0" role="button" aria-label="Play Chroma Incident">
@@ -657,6 +1907,16 @@
           <img src="chromaincident.png" alt="Chroma Incident">
         </div>
         <h2>Chroma Incident</h2>
+        <div class="like-dislike-container" onclick="event.stopPropagation()">
+          <button class="like-btn" onclick="handleLike(this, 'chroma-incident')">
+            <i class="fas fa-thumbs-up"></i>
+            <span class="like-count">0</span>
+          </button>
+          <button class="dislike-btn" onclick="handleDislike(this, 'chroma-incident')">
+            <i class="fas fa-thumbs-down"></i>
+            <span class="dislike-count">0</span>
+          </button>
+        </div>
       </div>
 
       <div class="game-card" data-categories="arcade" onclick="openFullscreen('./games/chrome-dino/index.html')" tabindex="0" role="button" aria-label="Play Chrome Dino">
@@ -664,6 +1924,16 @@
           <img src="chromedinorun.png" alt="Chrome Dino">
         </div>
         <h2>Chrome Dino</h2>
+        <div class="like-dislike-container" onclick="event.stopPropagation()">
+          <button class="like-btn" onclick="handleLike(this, 'chrome-dino')">
+            <i class="fas fa-thumbs-up"></i>
+            <span class="like-count">0</span>
+          </button>
+          <button class="dislike-btn" onclick="handleDislike(this, 'chrome-dino')">
+            <i class="fas fa-thumbs-down"></i>
+            <span class="dislike-count">0</span>
+          </button>
+        </div>
       </div>
 
       <div class="game-card" data-categories="puzzle" onclick="openFullscreen('./games/connect3/index.html')" tabindex="0" role="button" aria-label="Play Connect 3">
@@ -671,6 +1941,16 @@
           <img src="connect3.png" alt="Connect 3">
         </div>
         <h2>Connect 3</h2>
+        <div class="like-dislike-container" onclick="event.stopPropagation()">
+          <button class="like-btn" onclick="handleLike(this, 'connect-3')">
+            <i class="fas fa-thumbs-up"></i>
+            <span class="like-count">0</span>
+          </button>
+          <button class="dislike-btn" onclick="handleDislike(this, 'connect-3')">
+            <i class="fas fa-thumbs-down"></i>
+            <span class="dislike-count">0</span>
+          </button>
+        </div>
       </div>
 
       <div class="game-card" data-categories="strategy" onclick="openFullscreen('./games/cookieclicker/index.html')" tabindex="0" role="button" aria-label="Play Cookie Clicker">
@@ -678,6 +1958,16 @@
           <img src="cookieclicker.png" alt="Cookie Clicker">
         </div>
         <h2>Cookie Clicker</h2>
+        <div class="like-dislike-container" onclick="event.stopPropagation()">
+          <button class="like-btn" onclick="handleLike(this, 'cookie-clicker')">
+            <i class="fas fa-thumbs-up"></i>
+            <span class="like-count">0</span>
+          </button>
+          <button class="dislike-btn" onclick="handleDislike(this, 'cookie-clicker')">
+            <i class="fas fa-thumbs-down"></i>
+            <span class="dislike-count">0</span>
+          </button>
+        </div>
       </div>
 
       <div class="game-card" data-categories="arcade" onclick="openFullscreen('./games/crossyroad/index.html')" tabindex="0" role="button" aria-label="Play Crossy Road">
@@ -685,6 +1975,16 @@
           <img src="Crossyroad.png" alt="Crossy Road">
         </div>
         <h2>Crossy Road</h2>
+        <div class="like-dislike-container" onclick="event.stopPropagation()">
+          <button class="like-btn" onclick="handleLike(this, 'crossy-road')">
+            <i class="fas fa-thumbs-up"></i>
+            <span class="like-count">0</span>
+          </button>
+          <button class="dislike-btn" onclick="handleDislike(this, 'crossy-road')">
+            <i class="fas fa-thumbs-down"></i>
+            <span class="dislike-count">0</span>
+          </button>
+        </div>
       </div>
 
       <div class="game-card" data-categories="action" onclick="openFullscreen('./games/geometrydash/index.html')" tabindex="0" role="button" aria-label="Play Geometry Dash">
@@ -692,6 +1992,16 @@
           <img src="Geometrydash.png" alt="Geometry Dash">
         </div>
         <h2>Geometry Dash</h2>
+        <div class="like-dislike-container" onclick="event.stopPropagation()">
+          <button class="like-btn" onclick="handleLike(this, 'geometry-dash')">
+            <i class="fas fa-thumbs-up"></i>
+            <span class="like-count">0</span>
+          </button>
+          <button class="dislike-btn" onclick="handleDislike(this, 'geometry-dash')">
+            <i class="fas fa-thumbs-down"></i>
+            <span class="dislike-count">0</span>
+          </button>
+        </div>
       </div>
 
       <div class="game-card" data-categories="puzzle" onclick="openFullscreen('./games/tetris/index.html')" tabindex="0" role="button" aria-label="Play Tetris">
@@ -699,6 +2009,16 @@
           <img src="Tetris.png" alt="Tetris">
         </div>
         <h2>Tetris</h2>
+        <div class="like-dislike-container" onclick="event.stopPropagation()">
+          <button class="like-btn" onclick="handleLike(this, 'tetris')">
+            <i class="fas fa-thumbs-up"></i>
+            <span class="like-count">0</span>
+          </button>
+          <button class="dislike-btn" onclick="handleDislike(this, 'tetris')">
+            <i class="fas fa-thumbs-down"></i>
+            <span class="dislike-count">0</span>
+          </button>
+        </div>
       </div>
 
       <div class="game-card desktop-game" data-categories="racing" onclick="openFullscreen('./games/racer/index.html')" tabindex="0" role="button" aria-label="Play Racer">
@@ -706,6 +2026,16 @@
           <img src="Racer.png" alt="Racer">
         </div>
         <h2>Racer</h2>
+        <div class="like-dislike-container" onclick="event.stopPropagation()">
+          <button class="like-btn" onclick="handleLike(this, 'racer')">
+            <i class="fas fa-thumbs-up"></i>
+            <span class="like-count">0</span>
+          </button>
+          <button class="dislike-btn" onclick="handleDislike(this, 'racer')">
+            <i class="fas fa-thumbs-down"></i>
+            <span class="dislike-count">0</span>
+          </button>
+        </div>
       </div>
 
       <div class="game-card" data-categories="arcade" onclick="openFullscreen('./games/snake/index.html')" tabindex="0" role="button" aria-label="Play Snake">
@@ -713,6 +2043,16 @@
           <img src="Snake.png" alt="Snake">
         </div>
         <h2>Snake</h2>
+        <div class="like-dislike-container" onclick="event.stopPropagation()">
+          <button class="like-btn" onclick="handleLike(this, 'snake')">
+            <i class="fas fa-thumbs-up"></i>
+            <span class="like-count">0</span>
+          </button>
+          <button class="dislike-btn" onclick="handleDislike(this, 'snake')">
+            <i class="fas fa-thumbs-down"></i>
+            <span class="dislike-count">0</span>
+          </button>
+        </div>
       </div>
 
       <div class="game-card" data-categories="arcade" onclick="openFullscreen('./games/doodle-jump/index.html')" tabindex="0" role="button" aria-label="Play Doodle Jump">
@@ -720,6 +2060,16 @@
           <img src="Doodle jump.png" alt="Doodle Jump">
         </div>
         <h2>Doodle Jump</h2>
+        <div class="like-dislike-container" onclick="event.stopPropagation()">
+          <button class="like-btn" onclick="handleLike(this, 'doodle-jump')">
+            <i class="fas fa-thumbs-up"></i>
+            <span class="like-count">0</span>
+          </button>
+          <button class="dislike-btn" onclick="handleDislike(this, 'doodle-jump')">
+            <i class="fas fa-thumbs-down"></i>
+            <span class="dislike-count">0</span>
+          </button>
+        </div>
       </div>
     </section>
 
@@ -752,158 +2102,273 @@
   </footer>
 
   <script defer>
-    document.addEventListener('DOMContentLoaded', function () {
-      // Category filtering
-      const categoryButtons = document.querySelectorAll('.category-btn');
-      const gameCards = document.querySelectorAll('.game-card');
+    // Define all functions in the global scope
+    let points = 0;
+    let streak = 0;
+    let gamesPlayed = {};
+    let lastVisit = null;
+
+    // Initialize the game system
+    function initializeGameSystem() {
+      console.log('Initializing game system...');
       
-      categoryButtons.forEach(button => {
-        button.addEventListener('click', () => {
-          categoryButtons.forEach(btn => btn.classList.remove('active'));
-          button.classList.add('active');
-          
-          const category = button.getAttribute('data-category');
-          
-          gameCards.forEach(card => {
-            if (category === 'all') {
-              card.style.display = 'block';
-            } else {
-              const categories = card.getAttribute('data-categories').split(' ');
-              card.style.display = categories.includes(category) ? 'block' : 'none';
-            }
-          });
-        });
-      });
-
-      // Search functionality
-      const searchInput = document.getElementById('gameSearch');
-      let searchTimeout;
+      // Load saved data
+      points = parseInt(localStorage.getItem('points')) || 0;
+      streak = parseInt(localStorage.getItem('streak')) || 0;
+      gamesPlayed = JSON.parse(localStorage.getItem('gamesPlayed')) || {};
+      lastVisit = localStorage.getItem('lastVisit');
       
-      searchInput.addEventListener('input', function () {
-        clearTimeout(searchTimeout);
-        searchTimeout = setTimeout(() => {
-          const searchTerm = this.value.toLowerCase();
-          const activeCategory = document.querySelector('.category-btn.active').getAttribute('data-category');
-          
-          gameCards.forEach(card => {
-            const title = card.querySelector('h2').textContent.toLowerCase();
-            const categories = card.getAttribute('data-categories');
-            
-            const matchesSearch = title.includes(searchTerm);
-            const matchesCategory = activeCategory === 'all' || categories.includes(activeCategory);
-            
-            card.style.display = matchesSearch && matchesCategory ? 'block' : 'none';
-          });
-        }, 150);
+      console.log('Loaded data:', {
+        points,
+        streak,
+        lastVisit,
+        gamesPlayed
       });
+      
+      // Check daily streak
+      checkDailyStreak();
+      
+      // Update displays
+      document.getElementById('points').textContent = points;
+      document.getElementById('streak').textContent = streak;
+      updateMoneyProgress();
+    }
 
-      // Lazy loading
-      const lazyLoad = (iframe) => {
-        if (iframe.getAttribute('data-src') && iframe.src === 'about:blank') {
-          iframe.src = iframe.getAttribute('data-src');
-        }
-      };
-
-      const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            lazyLoad(entry.target);
-            observer.unobserve(entry.target);
-          }
-        });
-      }, { 
-        rootMargin: '100px 0px',
-        threshold: 0.1
-      });
-
-      document.querySelectorAll('iframe[loading="lazy"]').forEach(frame => observer.observe(frame));
-
-      // Fullscreen handling with proper cleanup
-      window.openFullscreen = function (url) {
-        const overlay = document.getElementById("fullscreenOverlay");
-        const fullscreenIframe = document.getElementById("fullscreenIframe");
-        const loader = document.getElementById("loaderOverlay");
-
-        // Show loader
-        loader.style.display = 'flex';
-        overlay.style.display = 'flex';
-
-        // Set iframe source
-        fullscreenIframe.src = url;
-
-        // Hide loader when game is loaded
-        fullscreenIframe.onload = () => {
-          loader.style.display = 'none';
-        };
-      };
-
-      window.closeFullscreen = function () {
-        const overlay = document.getElementById("fullscreenOverlay");
-        const fullscreenIframe = document.getElementById("fullscreenIframe");
+    // Check and update daily streak
+    function checkDailyStreak() {
+      console.log('Checking daily streak...');
+      
+      const today = new Date().toDateString();
+      const lastVisit = localStorage.getItem('lastVisit');
+      
+      console.log('Today:', today);
+      console.log('Last visit:', lastVisit);
+      
+      if (lastVisit) {
+        const lastVisitDate = new Date(lastVisit);
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
         
-        // Stop all audio and video
-        if (fullscreenIframe) {
-          try {
-            const iframeWindow = fullscreenIframe.contentWindow;
-            if (iframeWindow) {
-              // Stop all audio
-              const audios = iframeWindow.document.getElementsByTagName('audio');
-              for (let audio of audios) {
-                audio.pause();
-                audio.currentTime = 0;
-              }
-              
-              // Stop all video
-              const videos = iframeWindow.document.getElementsByTagName('video');
-              for (let video of videos) {
-                video.pause();
-                video.currentTime = 0;
-              }
-            }
-          } catch (e) {
-            console.log('Error cleaning up iframe:', e);
-          }
-        }
+        console.log('Last visit date:', lastVisitDate.toDateString());
+        console.log('Yesterday:', yesterday.toDateString());
         
-        // Hide overlay and clear iframe
-        overlay.style.display = 'none';
-        if (fullscreenIframe) {
-          fullscreenIframe.src = 'about:blank';
+        if (lastVisitDate.toDateString() === yesterday.toDateString()) {
+          // Consecutive day
+          streak++;
+          console.log('Consecutive day! New streak:', streak);
+          showAchievement('Streak Updated', `Day ${streak} streak!`);
+        } else if (lastVisitDate.toDateString() !== today) {
+          // Streak broken
+          streak = 1;
+          console.log('Streak broken! Reset to:', streak);
+          showAchievement('New Streak', 'Starting a new streak!');
+        } else {
+          console.log('Already visited today, streak maintained:', streak);
         }
-      };
-
-      // Optimized share functionality
-      const shareBtn = document.getElementById('nativeShareBtn');
-      if (navigator.share) {
-        shareBtn.addEventListener('click', async function () {
-          try {
-            await navigator.share({
-              title: 'Cresenty Games',
-              text: 'Play free online games at Cresenty Games!',
-              url: window.location.href
-            });
-          } catch (err) {
-            console.log('Error sharing:', err);
-          }
-        });
       } else {
-        shareBtn.style.display = 'none';
+        // First visit
+        streak = 1;
+        console.log('First visit! Starting streak:', streak);
+        showAchievement('First Visit', 'Starting your streak!');
       }
+      
+      // Save streak and update last visit
+      localStorage.setItem('streak', streak);
+      localStorage.setItem('lastVisit', today);
+      
+      console.log('Saved streak:', streak);
+      console.log('Saved last visit:', today);
+      
+      // Update streak display
+      document.getElementById('streak').textContent = streak;
+      
+      // Check for daily reward
+      checkDailyReward();
+    }
+
+    // Check and handle daily reward
+    function checkDailyReward() {
+      console.log('Checking daily reward...');
+      
+      const today = new Date().toDateString();
+      const lastReward = localStorage.getItem('lastReward');
+      
+      console.log('Today:', today);
+      console.log('Last reward:', lastReward);
+      
+      if (lastReward !== today) {
+        console.log('Daily reward available!');
+        // Show daily reward button
+        const dailyReward = document.getElementById('dailyReward');
+        dailyReward.style.display = 'flex';
+        
+        // Add click handler if not already added
+        if (!dailyReward.hasEventListener) {
+          dailyReward.addEventListener('click', claimDailyReward);
+          dailyReward.hasEventListener = true;
+          console.log('Added daily reward click handler');
+        }
+      } else {
+        console.log('Daily reward already claimed today');
+        const dailyReward = document.getElementById('dailyReward');
+        dailyReward.style.display = 'none';
+      }
+    }
+
+    // Claim daily reward
+    function claimDailyReward() {
+      console.log('Claiming daily reward...');
+      
+      const baseReward = 10;
+      const streakBonus = Math.min(streak * 2, 20); // Max 20 bonus points
+      const totalReward = baseReward + streakBonus;
+      
+      console.log('Reward calculation:', {
+        baseReward,
+        streakBonus,
+        totalReward,
+        currentStreak: streak
+      });
+      
+      // Add points
+      points += totalReward;
+      localStorage.setItem('points', points);
+      
+      // Update displays
+      document.getElementById('points').textContent = points;
+      updateMoneyProgress();
+      
+      // Hide reward button
+      const dailyReward = document.getElementById('dailyReward');
+      dailyReward.style.display = 'none';
+      
+      // Save last reward date
+      const today = new Date().toDateString();
+      localStorage.setItem('lastReward', today);
+      
+      console.log('Saved last reward date:', today);
+      
+      // Show achievement
+      showAchievement('Daily Reward', `Claimed ${totalReward} points! (${baseReward} base + ${streakBonus} streak bonus)`);
+      
+      // Add streak multiplier to next game
+      const streakMultiplier = Math.min(1 + (streak * 0.1), 3);
+      showAchievement('Streak Bonus', `${Math.round(streakMultiplier * 100)}% points multiplier active!`);
+    }
+
+    // Initialize when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('DOM loaded, initializing...');
+      
+      // Initialize game system
+      initializeGameSystem();
+      
+      // Add keyboard support for closing fullscreen
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          closeFullscreen();
+        }
+      });
+
+      // Add click handlers for game cards
+      document.querySelectorAll('.game-card').forEach(card => {
+        card.addEventListener('click', function() {
+          const gameUrl = this.getAttribute('onclick').match(/'([^']+)'/)[1];
+          openFullscreen(gameUrl);
+        });
+      });
     });
 
-    // Optimized service worker registration with better error handling
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function() {
-        navigator.serviceWorker.register('/service-worker.js', {
-          scope: '/'
-        }).then(registration => {
-          console.log('ServiceWorker registration successful');
-          registration.update();
-        }).catch(err => {
-          console.log('ServiceWorker registration failed:', err);
-        });
-      });
+    // Track game play
+    function trackGamePlay(gameId) {
+      console.log('Tracking game play for:', gameId);
+      
+      // Get current values
+      points = parseInt(localStorage.getItem('points')) || 0;
+      streak = parseInt(localStorage.getItem('streak')) || 0;
+      gamesPlayed = JSON.parse(localStorage.getItem('gamesPlayed')) || {};
+
+      // Calculate points with streak multiplier
+      const streakMultiplier = Math.min(1 + (streak * 0.1), 3);
+      const basePoints = !gamesPlayed[gameId] ? 5 : 2;
+      const totalPoints = Math.floor(basePoints * streakMultiplier);
+      
+      points += totalPoints;
+      
+      // Update games played
+      gamesPlayed[gameId] = (gamesPlayed[gameId] || 0) + 1;
+
+      // Save to localStorage
+      localStorage.setItem('points', points);
+      localStorage.setItem('gamesPlayed', JSON.stringify(gamesPlayed));
+
+      // Update displays
+      document.getElementById('points').textContent = points;
+      updateMoneyProgress();
+      
+      // Show achievement with streak bonus info
+      const message = !gamesPlayed[gameId] 
+        ? `First play! Earned ${totalPoints} points (${basePoints} × ${streakMultiplier.toFixed(1)}x streak bonus)`
+        : `Earned ${totalPoints} points (${basePoints} × ${streakMultiplier.toFixed(1)}x streak bonus)`;
+      showAchievement('Game Played', message);
+      
+      console.log('Points updated:', points);
     }
+
+    // Update money progress
+    function updateMoneyProgress() {
+      const progress = (points % 100000) / 1000;
+      document.getElementById('moneyProgress').style.width = `${progress}%`;
+      document.getElementById('currentPoints').textContent = points % 100000;
+    }
+
+    // Show achievement
+    function showAchievement(title, message) {
+      const badge = document.getElementById('achievementBadge');
+      const achievementText = document.getElementById('achievementText');
+      
+      achievementText.textContent = message;
+      badge.classList.add('show');
+      
+      setTimeout(() => {
+        badge.classList.remove('show');
+      }, 3000);
+    }
+
+    // Open fullscreen
+    window.openFullscreen = function(url) {
+      console.log('Opening game:', url);
+      
+      const overlay = document.getElementById('fullscreenOverlay');
+      const iframe = document.getElementById('fullscreenIframe');
+      const loader = document.getElementById('loaderOverlay');
+      
+      // Show loader
+      loader.style.display = 'flex';
+      
+      // Set iframe source and show overlay
+      iframe.src = url;
+      overlay.style.display = 'flex';
+      
+      // Hide loader when iframe is loaded
+      iframe.onload = function() {
+        loader.style.display = 'none';
+        // Track game play after iframe loads
+        const gameId = url.split('/').pop().replace('.html', '');
+        trackGamePlay(gameId);
+      };
+    };
+
+    // Close fullscreen
+    window.closeFullscreen = function() {
+      const overlay = document.getElementById('fullscreenOverlay');
+      const iframe = document.getElementById('fullscreenIframe');
+      
+      iframe.src = 'about:blank';
+      overlay.style.display = 'none';
+    };
+
+    // Rest of your existing code...
   </script>
 </body>
 </html>
