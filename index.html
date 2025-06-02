@@ -1675,9 +1675,106 @@
         font-size: 1rem;
       }
     }
+
+    /* Add these new styles for the login prompt notification */
+    .login-prompt {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--card-bg);
+      border: 2px solid var(--primary-color);
+      border-radius: 10px;
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      z-index: 2001; /* Increased z-index to be above money reward progress */
+      box-shadow: 0 0 20px rgba(255, 111, 97, 0.3);
+      transform: translateX(120%);
+      transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    .login-prompt.show {
+      transform: translateX(0);
+    }
+
+    .login-prompt i {
+      color: var(--primary-color);
+      font-size: 1.5rem;
+    }
+
+    .login-prompt-content {
+      flex: 1;
+    }
+
+    .login-prompt h4 {
+      color: var(--primary-color);
+      margin: 0 0 5px 0;
+      font-size: 1.1rem;
+    }
+
+    .login-prompt p {
+      color: var(--text-color);
+      margin: 0;
+      font-size: 0.9rem;
+    }
+
+    .login-prompt .close-prompt {
+      background: none;
+      border: none;
+      color: var(--text-color);
+      cursor: pointer;
+      font-size: 1.2rem;
+      padding: 5px;
+      transition: color 0.3s ease;
+    }
+
+    .login-prompt .close-prompt:hover {
+      color: var(--primary-color);
+    }
+
+    .login-prompt .login-btn {
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+    }
+
+    .login-prompt .login-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(255, 111, 97, 0.4);
+    }
+
+    /* Update money progress z-index to be lower */
+    .money-progress {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--card-bg);
+      border: 2px solid var(--money-color);
+      border-radius: 10px;
+      padding: 15px;
+      width: 300px;
+      z-index: 1000;
+    }
   </style>
 </head>
 <body>
+  <!-- Add the login prompt notification -->
+  <div class="login-prompt" id="loginPrompt">
+    <i class="fas fa-user-circle"></i>
+    <div class="login-prompt-content">
+      <h4>Create an Account</h4>
+      <p>Save your progress and earn more rewards!</p>
+    </div>
+    <button class="login-btn" onclick="openAuthModal()">Login / Sign Up</button>
+    <button class="close-prompt" onclick="closeLoginPrompt()">&times;</button>
+  </div>
+
   <div class="progress-bar"></div>
   
   <div class="points-display">
@@ -2839,6 +2936,283 @@
         closeAuthModal();
       }
     });
+  </script>
+  <script>
+    // Enhanced Auth System with Data Persistence
+    document.addEventListener('DOMContentLoaded', function() {
+      const authBtn = document.getElementById('authBtn');
+      const authModal = document.getElementById('authModal');
+      const authTabs = document.querySelectorAll('.auth-tab');
+      const authForms = document.querySelectorAll('.auth-form');
+      const loginForm = document.getElementById('loginForm');
+      const signupForm = document.getElementById('signupForm');
+      const loginPrompt = document.getElementById('loginPrompt');
+
+      // Check if user is logged in
+      const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      if (currentUser) {
+        // Update UI for logged-in user
+        authBtn.innerHTML = `<i class="fas fa-user"></i><span>${currentUser.username}</span>`;
+        // Load user data
+        loadUserData(currentUser.username);
+      } else {
+        // Show login prompt after 30 seconds
+        setTimeout(showLoginPrompt, 30000);
+      }
+
+      // Open modal
+      authBtn.addEventListener('click', () => {
+        if (currentUser) {
+          // Show user profile or logout option
+          showUserMenu();
+        } else {
+          authModal.style.display = 'flex';
+        }
+      });
+
+      // Tab switching
+      authTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          const targetForm = tab.dataset.tab;
+          authTabs.forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          authForms.forEach(form => {
+            form.classList.remove('active');
+            if (form.id === `${targetForm}Form`) {
+              form.classList.add('active');
+            }
+          });
+        });
+      });
+
+      // Login form submission
+      loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const username = document.getElementById('loginUsername').value;
+        const password = document.getElementById('loginPassword').value;
+
+        // Get users from localStorage
+        const users = JSON.parse(localStorage.getItem('users')) || {};
+        
+        if (users[username] && users[username].password === password) {
+          // Login successful
+          const currentUser = {
+            username: username,
+            lastLogin: new Date().toISOString()
+          };
+          localStorage.setItem('currentUser', JSON.stringify(currentUser));
+          
+          // Load user data
+          loadUserData(username);
+          
+          // Update UI
+          authBtn.innerHTML = `<i class="fas fa-user"></i><span>${username}</span>`;
+          showMessage(loginForm, 'Login successful!', 'success');
+          
+          // Close modal and prompt
+          setTimeout(() => {
+            closeAuthModal();
+            closeLoginPrompt();
+          }, 1500);
+        } else {
+          showMessage(loginForm, 'Invalid username or password!', 'error');
+        }
+      });
+
+      // Signup form submission
+      signupForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const username = document.getElementById('signupUsername').value;
+        const email = document.getElementById('signupEmail').value;
+        const password = document.getElementById('signupPassword').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+
+        if (password !== confirmPassword) {
+          showMessage(signupForm, 'Passwords do not match!', 'error');
+          return;
+        }
+
+        // Get existing users
+        const users = JSON.parse(localStorage.getItem('users')) || {};
+        
+        if (users[username]) {
+          showMessage(signupForm, 'Username already exists!', 'error');
+          return;
+        }
+
+        // Create new user
+        users[username] = {
+          email: email,
+          password: password,
+          points: 0,
+          streak: 0,
+          gamesPlayed: {},
+          achievements: [],
+          createdAt: new Date().toISOString()
+        };
+
+        // Save users
+        localStorage.setItem('users', JSON.stringify(users));
+
+        // Auto login
+        const currentUser = {
+          username: username,
+          lastLogin: new Date().toISOString()
+        };
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+
+        showMessage(signupForm, 'Account created successfully!', 'success');
+        
+        // Load user data
+        loadUserData(username);
+        
+        // Update UI
+        authBtn.innerHTML = `<i class="fas fa-user"></i><span>${username}</span>`;
+        
+        // Close modal and prompt
+        setTimeout(() => {
+          closeAuthModal();
+          closeLoginPrompt();
+        }, 1500);
+      });
+    });
+
+    // Function to load user data
+    function loadUserData(username) {
+      const users = JSON.parse(localStorage.getItem('users')) || {};
+      const userData = users[username];
+      
+      if (userData) {
+        // Update points
+        points = userData.points || 0;
+        document.getElementById('points').textContent = points;
+        
+        // Update streak
+        streak = userData.streak || 0;
+        document.getElementById('streak').textContent = streak;
+        
+        // Update games played
+        gamesPlayed = userData.gamesPlayed || {};
+        
+        // Update money progress
+        updateMoneyProgress();
+      }
+    }
+
+    // Function to save user data
+    function saveUserData() {
+      const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      if (currentUser) {
+        const users = JSON.parse(localStorage.getItem('users')) || {};
+        const userData = users[currentUser.username];
+        
+        if (userData) {
+          userData.points = points;
+          userData.streak = streak;
+          userData.gamesPlayed = gamesPlayed;
+          userData.lastLogin = new Date().toISOString();
+          
+          users[currentUser.username] = userData;
+          localStorage.setItem('users', JSON.stringify(users));
+        }
+      }
+    }
+
+    // Show login prompt
+    function showLoginPrompt() {
+      const loginPrompt = document.getElementById('loginPrompt');
+      const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      
+      if (!currentUser && !localStorage.getItem('loginPromptShown')) {
+        loginPrompt.classList.add('show');
+        localStorage.setItem('loginPromptShown', 'true');
+      }
+    }
+
+    // Close login prompt
+    function closeLoginPrompt() {
+      const loginPrompt = document.getElementById('loginPrompt');
+      loginPrompt.classList.remove('show');
+    }
+
+    // Open auth modal
+    function openAuthModal() {
+      const authModal = document.getElementById('authModal');
+      authModal.style.display = 'flex';
+      closeLoginPrompt();
+    }
+
+    // Show user menu
+    function showUserMenu() {
+      const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      if (currentUser) {
+        // Create and show user menu
+        const menu = document.createElement('div');
+        menu.className = 'user-menu';
+        menu.innerHTML = `
+          <div class="user-info">
+            <h3>${currentUser.username}</h3>
+            <p>Points: ${points}</p>
+            <p>Streak: ${streak} days</p>
+          </div>
+          <button onclick="logout()">Logout</button>
+        `;
+        
+        // Position and show menu
+        const authBtn = document.getElementById('authBtn');
+        const rect = authBtn.getBoundingClientRect();
+        menu.style.position = 'absolute';
+        menu.style.top = `${rect.bottom + 10}px`;
+        menu.style.right = '20px';
+        menu.style.background = 'var(--card-bg)';
+        menu.style.padding = '15px';
+        menu.style.borderRadius = '10px';
+        menu.style.border = '2px solid var(--primary-color)';
+        menu.style.zIndex = '1000';
+        
+        document.body.appendChild(menu);
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', function closeMenu(e) {
+          if (!menu.contains(e.target) && e.target !== authBtn) {
+            menu.remove();
+            document.removeEventListener('click', closeMenu);
+          }
+        });
+      }
+    }
+
+    // Logout function
+    function logout() {
+      // Save current data before logout
+      saveUserData();
+      
+      // Clear current user
+      localStorage.removeItem('currentUser');
+      
+      // Reset UI
+      const authBtn = document.getElementById('authBtn');
+      authBtn.innerHTML = `<i class="fas fa-user"></i><span>Login / Sign Up</span>`;
+      
+      // Reset points and streak display
+      points = 0;
+      streak = 0;
+      document.getElementById('points').textContent = '0';
+      document.getElementById('streak').textContent = '0';
+      
+      // Show login prompt after delay
+      setTimeout(showLoginPrompt, 30000);
+    }
+
+    // Modify the existing trackGamePlay function to save user data
+    const originalTrackGamePlay = trackGamePlay;
+    trackGamePlay = function(gameId) {
+      originalTrackGamePlay(gameId);
+      saveUserData();
+    };
+
+    // Add periodic data saving
+    setInterval(saveUserData, 30000); // Save every 30 seconds
   </script>
 </body>
 </html>
