@@ -89,12 +89,12 @@
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
       color: var(--text-color);
-      padding: 30px 0;
+      padding: 30px 40px;
       text-align: center;
       border-bottom: 3px solid var(--primary-color);
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: space-between;
       position: relative;
       margin-bottom: 40px;
     }
@@ -297,26 +297,23 @@
     @media (max-width: 768px) {
       header {
         flex-direction: column;
-        padding: 20px 0;
-      }
-
-      .logo {
-        width: 100px;
-        height: 100px;
-        margin: 0 0 20px 0;
-      }
-
-      h1.cresenty-pixel {
-        font-size: 2rem;
-      }
-
-      .game-container {
-        grid-template-columns: 1fr;
         padding: 15px;
       }
 
-      .game-card iframe {
-        height: 300px;
+      .header-right {
+        margin-top: 15px;
+        width: 100%;
+        justify-content: center;
+      }
+
+      .points-display {
+        padding: 8px 15px;
+        font-size: 0.9rem;
+      }
+
+      .auth-btn {
+        padding: 8px 15px;
+        font-size: 0.9rem;
       }
     }
 
@@ -592,7 +589,7 @@
     .points-display {
       position: fixed;
       top: 20px;
-      right: 20px;
+      right: 80px; /* Changed from 20px to 80px to make room for auth button */
       background: var(--card-bg);
       border: 2px solid var(--primary-color);
       border-radius: 10px;
@@ -1403,258 +1400,30 @@
     @media (max-width: 768px) {
       header {
         flex-direction: column;
-        padding: 15px 0;
-        margin-bottom: 20px;
-      }
-
-      .logo {
-        width: 80px;
-        height: 80px;
-        margin: 0 0 15px 0;
-      }
-
-      h1.cresenty-pixel {
-        font-size: 1.8rem;
-        text-align: center;
-      }
-
-      .tagline {
-        font-size: 1rem;
-        margin-top: 10px;
-      }
-
-      .search-container {
-        margin: 15px auto;
-        padding: 0 15px;
-      }
-
-      #gameSearch {
-        padding: 12px 20px;
-        font-size: 1rem;
-      }
-
-      .game-container {
-        grid-template-columns: 1fr;
-        gap: 20px;
         padding: 15px;
       }
 
-      .game-card {
-        padding: 15px;
-      }
-
-      .game-icon {
-        height: 180px;
-      }
-
-      .game-card h2 {
-        font-size: 1.3rem;
-        margin: 10px 0;
-      }
-
-      .points-display, .streak-display {
-        top: 10px;
-        padding: 8px 15px;
-        font-size: 0.9rem;
+      .header-right {
+        margin-top: 15px;
+        width: 100%;
+        justify-content: center;
       }
 
       .points-display {
-        right: 10px;
-      }
-
-      .streak-display {
-        left: 10px;
-      }
-
-      .money-progress {
-        bottom: 10px;
-        right: 10px;
-        width: calc(100% - 20px);
-        padding: 10px;
-      }
-
-      .money-progress h3 {
-        font-size: 1rem;
-      }
-
-      .progress-container {
-        height: 8px;
-      }
-
-      .progress-text {
-        font-size: 0.8rem;
-      }
-
-      .daily-reward {
-        bottom: 10px;
-        left: 10px;
-        padding: 10px;
-      }
-
-      .daily-reward-info h3 {
-        font-size: 1rem;
-      }
-
-      .daily-reward-info p {
-        font-size: 0.8rem;
-      }
-
-      .achievement-badge {
-        bottom: 10px;
-        right: 10px;
-        padding: 10px;
-        max-width: calc(100% - 20px);
-      }
-
-      .achievement-info h3 {
-        font-size: 1rem;
-      }
-
-      .achievement-info p {
-        font-size: 0.8rem;
-      }
-
-      .reward-explainer {
-        margin: 15px;
-        padding: 20px;
-      }
-
-      .reward-header h2 {
-        font-size: 1.8rem;
-      }
-
-      .subtitle {
-        font-size: 1rem;
-      }
-
-      .reward-grid {
-        grid-template-columns: 1fr;
-        gap: 15px;
-      }
-
-      .reward-card {
-        padding: 15px;
-      }
-
-      .reward-card h3 {
-        font-size: 1.2rem;
-      }
-
-      .reward-card p {
-        font-size: 0.9rem;
-      }
-
-      .live-stats {
-        flex-direction: column;
-        gap: 15px;
-        padding: 15px;
-      }
-
-      .live-stat {
-        padding: 10px 15px;
-      }
-
-      .live-stat i {
-        font-size: 1.5rem;
-      }
-
-      .live-stat .counter {
-        font-size: 1.4rem;
-      }
-
-      .live-stat .label {
-        font-size: 0.8rem;
-      }
-
-      .trust-badges {
-        flex-direction: column;
-        gap: 10px;
-      }
-
-      .badge {
-        width: 100%;
-        justify-content: center;
         padding: 8px 15px;
         font-size: 0.9rem;
       }
 
-      .progress-milestones {
-        flex-wrap: wrap;
-        gap: 15px;
-        justify-content: center;
-      }
-
-      .milestone {
-        width: 50px;
-        height: 50px;
-      }
-
-      .milestone i {
-        font-size: 1.2rem;
-      }
-
-      .milestone span {
-        font-size: 0.7rem;
-        bottom: -25px;
-      }
-
-      .reward-tagline {
-        font-size: 1rem;
-        text-align: center;
-        padding: 0 15px;
-      }
-
-      .game-categories {
-        padding: 0 10px;
-        gap: 10px;
-        margin: 15px auto;
-      }
-
-      .category-btn {
+      .auth-btn {
         padding: 8px 15px;
         font-size: 0.9rem;
       }
+    }
 
-      .like-dislike-container {
+    @media (max-width: 480px) {
+      .header-right {
+        flex-direction: column;
         gap: 10px;
-      }
-
-      .like-btn, .dislike-btn {
-        font-size: 1rem;
-        padding: 4px 8px;
-      }
-
-      .like-count, .dislike-count {
-        font-size: 0.8rem;
-      }
-
-      .share-section {
-        margin: 30px 0;
-      }
-
-      #nativeShareBtn {
-        font-size: 1.1rem;
-        padding: 12px 25px;
-      }
-
-      footer {
-        padding: 30px 0;
-        margin-top: 40px;
-      }
-
-      .social-icons {
-        gap: 15px;
-      }
-
-      .icon {
-        width: 40px;
-        height: 40px;
-        font-size: 20px;
-      }
-
-      .copyright {
-        font-size: 0.9rem;
-        margin-top: 15px;
       }
     }
 
@@ -1680,6 +1449,230 @@
       .category-btn {
         padding: 6px 12px;
         font-size: 0.8rem;
+      }
+    }
+
+    /* Auth Button Styles */
+    .auth-btn {
+      background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+      border: none;
+      padding: 12px 25px;
+      border-radius: 25px;
+      color: white;
+      font-family: var(--font-primary);
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .auth-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .auth-btn i {
+      font-size: 1.2rem;
+    }
+
+    /* Auth Modal Styles */
+    .auth-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
+      z-index: 10000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .auth-content {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 30px;
+      width: 90%;
+      max-width: 400px;
+      position: relative;
+      border: 2px solid var(--primary-color);
+      box-shadow: 0 0 30px rgba(255, 111, 97, 0.3);
+      animation: modalSlideIn 0.3s ease;
+    }
+
+    @keyframes modalSlideIn {
+      from {
+        transform: translateY(-50px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .close-auth {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: none;
+      border: none;
+      color: var(--text-color);
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .close-auth:hover {
+      color: var(--primary-color);
+    }
+
+    .auth-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 25px;
+    }
+
+    .auth-tab {
+      flex: 1;
+      padding: 12px;
+      background: transparent;
+      border: 2px solid var(--primary-color);
+      color: var(--text-color);
+      font-family: var(--font-primary);
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border-radius: 10px;
+    }
+
+    .auth-tab.active {
+      background: var(--primary-color);
+      color: white;
+    }
+
+    .auth-form {
+      display: none;
+    }
+
+    .auth-form.active {
+      display: block;
+    }
+
+    .form-group {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .form-group i {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--primary-color);
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px 15px 12px 45px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid var(--glass-border);
+      border-radius: 10px;
+      color: var(--text-color);
+      font-family: var(--font-primary);
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .form-group input:focus {
+      border-color: var(--primary-color);
+      background: rgba(255, 255, 255, 0.15);
+      outline: none;
+    }
+
+    .auth-submit {
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+      border: none;
+      border-radius: 10px;
+      color: white;
+      font-family: var(--font-primary);
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 10px;
+    }
+
+    .auth-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(255, 111, 97, 0.4);
+    }
+
+    .form-footer {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .forgot-password {
+      color: var(--primary-color);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.3s ease;
+    }
+
+    .forgot-password:hover {
+      color: var(--secondary-color);
+    }
+
+    /* Error Message Styles */
+    .error-message {
+      color: #ff4444;
+      font-size: 0.9rem;
+      margin-top: 5px;
+      display: none;
+    }
+
+    /* Success Message Styles */
+    .success-message {
+      color: #00C851;
+      font-size: 0.9rem;
+      margin-top: 5px;
+      display: none;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+      .auth-btn {
+        top: 10px;
+        right: 10px;
+        padding: 8px 15px;
+        font-size: 0.9rem;
+      }
+
+      .auth-content {
+        width: 95%;
+        padding: 20px;
+      }
+
+      .auth-tab {
+        padding: 10px;
+        font-size: 0.9rem;
+      }
+
+      .form-group input {
+        padding: 10px 10px 10px 40px;
+        font-size: 0.9rem;
+      }
+
+      .auth-submit {
+        padding: 12px;
+        font-size: 1rem;
       }
     }
   </style>
@@ -1734,14 +1727,66 @@
   <main>
     <header>
       <img src="Cresenty Logo.jpg" alt="Cresenty Studio Logo" class="logo" loading="eager">
-      <div>
+      <div class="header-content">
         <h1 class="cresenty-pixel">Cresenty Games</h1>
         <p class="tagline">Play our selection of free online games</p>
         <div class="search-container">
           <input type="text" id="gameSearch" placeholder="Search games..." aria-label="Search games">
         </div>
       </div>
+      <div class="header-right">
+        <button id="authBtn" class="auth-btn">
+          <i class="fas fa-user"></i>
+          <span>Login / Sign Up</span>
+        </button>
+      </div>
     </header>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="auth-modal">
+      <div class="auth-content">
+        <button class="close-auth" onclick="closeAuthModal()">&times;</button>
+        <div class="auth-tabs">
+          <button class="auth-tab active" data-tab="login">Login</button>
+          <button class="auth-tab" data-tab="signup">Sign Up</button>
+        </div>
+        
+        <form id="loginForm" class="auth-form active">
+          <div class="form-group">
+            <i class="fas fa-user"></i>
+            <input type="text" id="loginUsername" placeholder="Username" required>
+          </div>
+          <div class="form-group">
+            <i class="fas fa-lock"></i>
+            <input type="password" id="loginPassword" placeholder="Password" required>
+          </div>
+          <button type="submit" class="auth-submit">Login</button>
+          <div class="form-footer">
+            <a href="#" class="forgot-password">Forgot Password?</a>
+          </div>
+        </form>
+
+        <form id="signupForm" class="auth-form">
+          <div class="form-group">
+            <i class="fas fa-user"></i>
+            <input type="text" id="signupUsername" placeholder="Username" required pattern="^[a-zA-Z0-9_]{3,20}$" title="Username must be 3-20 characters long and can only contain letters, numbers, and underscores">
+          </div>
+          <div class="form-group">
+            <i class="fas fa-envelope"></i>
+            <input type="email" id="signupEmail" placeholder="Email" required>
+          </div>
+          <div class="form-group">
+            <i class="fas fa-lock"></i>
+            <input type="password" id="signupPassword" placeholder="Password" required pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" title="Password must be at least 8 characters long and include both letters and numbers">
+          </div>
+          <div class="form-group">
+            <i class="fas fa-lock"></i>
+            <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+          </div>
+          <button type="submit" class="auth-submit">Sign Up</button>
+        </form>
+      </div>
+    </div>
 
     <div class="reward-explainer">
       <div class="reward-content">
@@ -1807,6 +1852,30 @@
                • 24/7 support</p>
             <div class="card-footer">
               <span class="highlight">Instant payments, no waiting!</span>
+            </div>
+          </div>
+          <div class="reward-card">
+            <i class="fas fa-user-shield"></i>
+            <h3>Account Benefits</h3>
+            <p>• Save game progress<br>
+               • Track achievements<br>
+               • Custom profile page<br>
+               • Exclusive game themes<br>
+               • Priority support access</p>
+            <div class="card-footer">
+              <span class="highlight">Create your account now!</span>
+            </div>
+          </div>
+          <div class="reward-card">
+            <i class="fas fa-users"></i>
+            <h3>Social Features</h3>
+            <p>• Friend leaderboards<br>
+               • Share achievements<br>
+               • Join tournaments<br>
+               • Team challenges<br>
+               • Community events</p>
+            <div class="card-footer">
+              <span class="highlight">Connect with other players!</span>
             </div>
           </div>
         </div>
@@ -2653,6 +2722,123 @@
     };
 
     // Rest of your existing code...
+  </script>
+  <script>
+    // Auth System
+    document.addEventListener('DOMContentLoaded', function() {
+      const authBtn = document.getElementById('authBtn');
+      const authModal = document.getElementById('authModal');
+      const authTabs = document.querySelectorAll('.auth-tab');
+      const authForms = document.querySelectorAll('.auth-form');
+      const loginForm = document.getElementById('loginForm');
+      const signupForm = document.getElementById('signupForm');
+
+      // Open modal
+      authBtn.addEventListener('click', () => {
+        authModal.style.display = 'flex';
+      });
+
+      // Close modal when clicking outside
+      authModal.addEventListener('click', (e) => {
+        if (e.target === authModal) {
+          closeAuthModal();
+        }
+      });
+
+      // Tab switching
+      authTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          const targetForm = tab.dataset.tab;
+          
+          // Update active tab
+          authTabs.forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          
+          // Show corresponding form
+          authForms.forEach(form => {
+            form.classList.remove('active');
+            if (form.id === `${targetForm}Form`) {
+              form.classList.add('active');
+            }
+          });
+        });
+      });
+
+      // Login form submission
+      loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const username = document.getElementById('loginUsername').value;
+        const password = document.getElementById('loginPassword').value;
+
+        // Here you would typically make an API call to verify credentials
+        // For demo purposes, we'll just show a success message
+        showMessage(loginForm, 'Login successful!', 'success');
+        
+        // Update button text
+        authBtn.innerHTML = `<i class="fas fa-user"></i><span>${username}</span>`;
+        
+        // Close modal after delay
+        setTimeout(closeAuthModal, 1500);
+      });
+
+      // Signup form submission
+      signupForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const username = document.getElementById('signupUsername').value;
+        const email = document.getElementById('signupEmail').value;
+        const password = document.getElementById('signupPassword').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+
+        // Validate password match
+        if (password !== confirmPassword) {
+          showMessage(signupForm, 'Passwords do not match!', 'error');
+          return;
+        }
+
+        // Here you would typically make an API call to create account
+        // For demo purposes, we'll just show a success message
+        showMessage(signupForm, 'Account created successfully!', 'success');
+        
+        // Switch to login tab after delay
+        setTimeout(() => {
+          authTabs[0].click();
+        }, 1500);
+      });
+    });
+
+    function closeAuthModal() {
+      const authModal = document.getElementById('authModal');
+      authModal.style.display = 'none';
+    }
+
+    function showMessage(form, message, type) {
+      // Remove any existing message
+      const existingMessage = form.querySelector('.error-message, .success-message');
+      if (existingMessage) {
+        existingMessage.remove();
+      }
+
+      // Create new message element
+      const messageElement = document.createElement('div');
+      messageElement.className = `${type}-message`;
+      messageElement.textContent = message;
+      messageElement.style.display = 'block';
+
+      // Add message to form
+      form.appendChild(messageElement);
+
+      // Remove message after delay
+      setTimeout(() => {
+        messageElement.remove();
+      }, 3000);
+    }
+
+    // Add keyboard support for closing modal
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeAuthModal();
+      }
+    });
   </script>
 </body>
 </html>
