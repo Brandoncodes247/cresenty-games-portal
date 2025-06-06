@@ -1839,6 +1839,28 @@
       </div>
     </header>
 
+    <!-- Admin Panel Modal -->
+    <div id="adminModal" class="auth-modal">
+      <div class="auth-content" style="max-width: 800px; max-height: 80vh; overflow-y: auto;">
+        <button class="close-auth" onclick="closeAdminModal()">&times;</button>
+        <h2 style="color: var(--primary-color); margin-bottom: 20px;">Admin Panel</h2>
+        
+        <div class="admin-section">
+          <h3>User Accounts</h3>
+          <div id="userList" style="margin-top: 15px;">
+            <!-- User list will be populated here -->
+          </div>
+        </div>
+
+        <div class="admin-section" style="margin-top: 30px;">
+          <h3>User Statistics</h3>
+          <div id="userStats" style="margin-top: 15px;">
+            <!-- User stats will be populated here -->
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Auth Modal -->
     <div id="authModal" class="auth-modal">
       <div class="auth-content">
@@ -3213,6 +3235,102 @@
 
     // Add periodic data saving
     setInterval(saveUserData, 30000); // Save every 30 seconds
+  </script>
+
+  <!-- Admin Panel Script -->
+  <script>
+    // Admin Panel functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const adminBtn = document.getElementById('adminBtn');
+      const adminModal = document.getElementById('adminModal');
+
+      // Open admin panel
+      adminBtn.addEventListener('click', () => {
+        adminModal.style.display = 'flex';
+        loadAdminData();
+      });
+
+      // Close admin panel when clicking outside
+      adminModal.addEventListener('click', (e) => {
+        if (e.target === adminModal) {
+          closeAdminModal();
+        }
+      });
+    });
+
+    function closeAdminModal() {
+      const adminModal = document.getElementById('adminModal');
+      adminModal.style.display = 'none';
+    }
+
+    function loadAdminData() {
+      const users = JSON.parse(localStorage.getItem('users')) || {};
+      const userList = document.getElementById('userList');
+      const userStats = document.getElementById('userStats');
+
+      // Clear previous content
+      userList.innerHTML = '';
+      userStats.innerHTML = '';
+
+      // Create user list
+      const userTable = document.createElement('table');
+      userTable.style.width = '100%';
+      userTable.style.borderCollapse = 'collapse';
+      userTable.innerHTML = `
+        <thead>
+          <tr>
+            <th style="padding: 10px; text-align: left; border-bottom: 2px solid var(--primary-color);">Username</th>
+            <th style="padding: 10px; text-align: left; border-bottom: 2px solid var(--primary-color);">Email</th>
+            <th style="padding: 10px; text-align: left; border-bottom: 2px solid var(--primary-color);">Points</th>
+            <th style="padding: 10px; text-align: left; border-bottom: 2px solid var(--primary-color);">Streak</th>
+            <th style="padding: 10px; text-align: left; border-bottom: 2px solid var(--primary-color);">Created</th>
+            <th style="padding: 10px; text-align: left; border-bottom: 2px solid var(--primary-color);">Last Login</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${Object.entries(users).map(([username, data]) => `
+            <tr>
+              <td style="padding: 10px; border-bottom: 1px solid var(--glass-border);">${username}</td>
+              <td style="padding: 10px; border-bottom: 1px solid var(--glass-border);">${data.email}</td>
+              <td style="padding: 10px; border-bottom: 1px solid var(--glass-border);">${data.points || 0}</td>
+              <td style="padding: 10px; border-bottom: 1px solid var(--glass-border);">${data.streak || 0}</td>
+              <td style="padding: 10px; border-bottom: 1px solid var(--glass-border);">${new Date(data.createdAt).toLocaleDateString()}</td>
+              <td style="padding: 10px; border-bottom: 1px solid var(--glass-border);">${data.lastLogin ? new Date(data.lastLogin).toLocaleDateString() : 'Never'}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      `;
+      userList.appendChild(userTable);
+
+      // Create statistics
+      const totalUsers = Object.keys(users).length;
+      const totalPoints = Object.values(users).reduce((sum, user) => sum + (user.points || 0), 0);
+      const activeUsers = Object.values(users).filter(user => user.lastLogin && new Date(user.lastLogin) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)).length;
+
+      userStats.innerHTML = `
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+          <div style="background: var(--card-bg); padding: 20px; border-radius: 10px; text-align: center;">
+            <h4 style="color: var(--primary-color); margin-bottom: 10px;">Total Users</h4>
+            <p style="font-size: 24px;">${totalUsers}</p>
+          </div>
+          <div style="background: var(--card-bg); padding: 20px; border-radius: 10px; text-align: center;">
+            <h4 style="color: var(--primary-color); margin-bottom: 10px;">Total Points</h4>
+            <p style="font-size: 24px;">${totalPoints}</p>
+          </div>
+          <div style="background: var(--card-bg); padding: 20px; border-radius: 10px; text-align: center;">
+            <h4 style="color: var(--primary-color); margin-bottom: 10px;">Active Users (7d)</h4>
+            <p style="font-size: 24px;">${activeUsers}</p>
+          </div>
+        </div>
+      `;
+    }
+
+    // Add keyboard support for closing admin modal
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeAdminModal();
+      }
+    });
   </script>
 </body>
 </html>
